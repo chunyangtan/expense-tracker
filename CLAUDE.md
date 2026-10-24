@@ -25,3 +25,7 @@ This is Next.js 16 with React 19 and Tailwind 4. APIs, conventions and file stru
 - Use Haiku while developing and Sonnet in production.
 - Ship the simplest working version first, e.g. the full CSV in the prompt before any query tools.
 - The reasons behind decisions go in Notion CY Hub as decision Notes linked to the expense-tracker project. Offer to save one when a decision comes up. Code, plans and technical detail stay in this repo.
+
+## Git
+
+Commit without asking whenever a piece of work is finished and working, so progress is saved in small, readable steps. For example, when a `ROADMAP.md` task is done, commit it. Pushing is a separate decision, so ask before pushing.
