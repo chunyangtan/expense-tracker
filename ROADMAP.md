@@ -16,8 +16,8 @@ Each milestone ships on its own. Do them in order.
 
 ### M1: move the data to Supabase
 
-- [ ] Create a Supabase project. Put `SUPABASE_URL` and the key in `.env.local`
-- [ ] Create an `expenses` table using the schema below
+- [x] Create a Supabase project. Put `SUPABASE_URL` and the key in `.env.local`
+- [x] Create an `expenses` table using the schema below
 - [ ] Write a one-off script that imports `data/expenses.csv` (strip `¥` and commas from amounts, set `currency = 'JPY'`, `source = 'appsheet'`)
 - [ ] Make `app/api/chat/route.ts` read rows from Supabase instead of the file
 - [ ] Update the Haiku model ID (the code still uses `claude-haiku-4-5-20251001`)
