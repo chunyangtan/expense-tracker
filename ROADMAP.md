@@ -54,7 +54,7 @@ The base is the AppSheet columns, which were already well structured:
 
 | Column | Type | Notes |
 |---|---|---|
-| id | uuid | was AppSheet Row ID |
+| id | uuid | generated; the AppSheet Row ID is a plain counter and isn't kept |
 | date | date | |
 | item_name | text | |
 | category | text | e.g. `Variable (変動費)` |
