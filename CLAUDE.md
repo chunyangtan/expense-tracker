@@ -1,6 +1,6 @@
 # expense-tracker
 
-A personal expense tracker: a Claude chat over my own spending data (JPY and MYR, cash and card), growing toward replacing AppSheet for daily entry. `ROADMAP.md` has the plan, current milestone and data schema. Update it when a milestone task lands.
+A personal expense tracker: a Claude chat over my own spending data (JPY and MYR, cash and card), growing toward replacing AppSheet for daily entry. `ROADMAP.md` has the plan, current milestone and data schema. Update it when a milestone task lands. `DECISIONS.md` has the reasons behind each choice.
 
 ## Next.js here is newer than your training data
 
@@ -24,7 +24,7 @@ This is Next.js 16 with React 19 and Tailwind 4. APIs, conventions and file stru
 - The stack is fixed until Phase 3: Next.js + TypeScript + Tailwind, Claude API, Supabase, Vercel. Don't propose alternatives. Suggest the smallest next step instead.
 - Use Haiku while developing and Sonnet in production.
 - Ship the simplest working version first, e.g. the full CSV in the prompt before any query tools.
-- The reasons behind decisions go in Notion CY Hub as decision Notes linked to the expense-tracker project. Offer to save one when a decision comes up. Code, plans and technical detail stay in this repo.
+- The repo is the single source of truth for this project. `DECISIONS.md` holds the reasons behind choices; read it before asking why something is the way it is or proposing a change. When a decision is made, add an entry in the same piece of work, e.g. picking a charting library gets an entry with the alternatives and why. Notion only tracks the project's status.
 
 ## Git
 

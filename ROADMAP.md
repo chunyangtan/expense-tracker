@@ -4,7 +4,7 @@ What this app is for: one place for all my spending (JPY and MYR, cash and card)
 
 The stack is fixed: Next.js + TypeScript + Tailwind, Claude API, Supabase, Vercel. Don't switch tools before Phase 3.
 
-The reasons behind decisions live in Notion (CY Hub → Projects → expense-tracker). This file holds the plan and the technical details.
+The reasons behind decisions live in `DECISIONS.md`. This file holds the plan and the technical details.
 
 ## Done
 
