@@ -31,10 +31,10 @@ Done when the chat gives the same answers as before, with the data coming from t
 
 Most spending is already digital (Rakuten Card, Rakuten Pay, PayPay, Wise, SMBC Card) and comes in through statement import (M3). The form is for cash.
 
-- [ ] Add-expense form: date, item, category, sub-category, payment method, amount, currency (JPY/MYR), notes
-- [ ] Defaults: today, `Cash`, `JPY`, so a typical entry is item, category and amount
-- [ ] Pick categories and payment methods from the values already in the data
-- [ ] Show recent expenses in a list so I can check what I entered
+- [x] Add-expense form: date, item, category, sub-category, payment method, amount, currency (JPY/MYR), notes
+- [x] Defaults: today, `Cash`, `JPY`, so a typical entry is item, category and amount
+- [x] Pick categories and payment methods from the values already in the data
+- [x] Show recent expenses in a list so I can check what I entered (`/add` shows the last 10 added)
 
 Done when I can log a cash purchase in under 15 seconds.
 

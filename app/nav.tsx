@@ -4,6 +4,7 @@ const pages = [
   { href: "/", label: "Chat" },
   { href: "/dashboard", label: "Overview" },
   { href: "/expenses", label: "Expenses" },
+  { href: "/add", label: "Add" },
 ];
 
 // Links to the other pages, for each page's header.
