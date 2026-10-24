@@ -38,6 +38,7 @@ export default async function Dashboard() {
   const { data, error } = await supabase
     .from("expenses")
     .select("date, amount, currency, category")
+    .neq("kind", "transfer")
     .order("date");
   if (error) throw error;
 

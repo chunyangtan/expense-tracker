@@ -41,12 +41,14 @@ Done when I can log a cash purchase in under 15 seconds.
 
 ### M3: import Rakuten Card statements
 
-The smallest statement import, so card spending doesn't go unrecorded once AppSheet stops. Rakuten 家計簿 has no export or API, so data comes from each source's own statement CSV. Rakuten Card's comes from e-NAVI (PC site only).
+The smallest statement import, so card spending doesn't go unrecorded once AppSheet stops. Rakuten 家計簿 has no export or API, so data comes from each source's own statement CSV. Rakuten Card's comes from e-NAVI (PC site only). The CSVs are kept in Google Drive under `Finance/Credit Card - Rakuten`.
 
-- [ ] Schema additions (see Schema): `external_id`, `kind`, `original_amount`, `original_currency`
-- [ ] Upload a Rakuten Card CSV, parse it, keep the original text in `raw_description`, set `source = 'statement:rakuten-card'`
-- [ ] Claude suggests category and sub-category from the existing values
-- [ ] Review the rows, then insert. Skip rows whose `(source, external_id)` already exists
+- [x] Schema additions (see Schema): `external_id`, `kind`
+- [x] `/import`: upload one or more CSVs, parse them (`lib/statements/rakuten-card.ts`), keep the original text in `raw_description`, set `source = 'statement:rakuten-card'`
+- [x] Fixed rules for 楽天キャッシュ チャージ, Suica top-ups and ふるさと納税; Claude suggests the rest from the existing values (`lib/statements/categorise.ts`)
+- [x] A row with the same date and amount as an earlier non-cash entry merges into it: the statement's name, the existing category, the old name kept in notes
+- [x] Review the rows, then insert. Rows whose `(source, external_id)` already exists are skipped
+- [ ] Import the 12 months in Drive (2025-09 to 2026-10) and check the totals against e-NAVI
 
 Done when a month's Rakuten Card statement is in the table with categories, and re-uploading it adds nothing.
 
@@ -92,6 +94,5 @@ Added in M3, for statement import:
 |---|---|---|
 | external_id | text | the statement's own ID, or a hash of date + amount + raw description; unique together with `source` |
 | kind | text | `expense` (default), `refund`, `transfer`. Refunds are negative amounts. Transfers (card payments, wallet top-ups) aren't spending |
-| original_amount, original_currency | numeric, text | for foreign purchases billed in another currency, e.g. a MYR purchase on a JPY card |
 
-The `currency` check may need to allow more than JPY and MYR once Wise is imported (M5).
+Foreign card purchases have no column of their own: the statement's local-amount line (`現地利用額 … 変換レート …`) is appended to `raw_description`, because it gives the amount and rate but not the currency. The `currency` check may need to allow more than JPY and MYR once Wise is imported (M5).

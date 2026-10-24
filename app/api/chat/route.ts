@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
   const { data: expenses, error } = await supabase
     .from("expenses")
     .select("date, item_name, category, sub_category, payment_method, amount, currency, notes")
+    .neq("kind", "transfer")
     .order("date");
   if (error) {
     return NextResponse.json({ error: "Could not load expenses" }, { status: 500 });

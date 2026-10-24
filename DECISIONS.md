@@ -4,6 +4,23 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-24: Rakuten Card import rules
+
+- **Choice:**
+  - 楽天キャッシュ チャージ (Rakuten Pay top-ups) count as spending, under Variable / Rakuten Pay (unsplit), until Rakuten Pay history is imported (M5). Then they become `kind = 'transfer'`.
+  - Suica top-ups count as Variable / Transportation.
+  - Payments to a municipality (e.g. 茨城県境町) are Special / ふるさと納税.
+  - A statement row with the same date and amount as an earlier non-cash entry merges into it. The statement's name wins, the existing category stays, and the old name goes into notes.
+  - `original_amount` / `original_currency` were dropped from the plan.
+- **Alternatives:**
+  - Mark top-ups as transfers now, or pull Rakuten Pay history into Phase 1.
+  - Keep the AppSheet name on merged rows, or skip merging and let the reviewer untick duplicates.
+- **Why:**
+  - Top-ups are about a third of the statement rows, and the Rakuten Pay purchases behind them aren't on the card statement. Marking them as transfers now would drop that spending until M5. Counting the top-ups keeps the monthly totals right, just less detailed.
+  - Per-ride Suica detail isn't worth chasing.
+  - The statement name is the record that matches the bank. Hand-entered names are kept in notes, so nothing is lost.
+  - The statement's foreign-purchase line gives the local amount and rate but not the currency, so dedicated columns couldn't be filled reliably. It's kept in `raw_description` instead.
+
 ## 2026-10-24: card data comes from statement CSVs, cash by hand
 
 - **Choice:** most spending is digital (Rakuten Card, Rakuten Pay, PayPay, Wise, SMBC Card), so only cash is entered by hand (M2) and card data comes from each source's statement CSV. A Rakuten Card–only import (M3) moves into Phase 1, before AppSheet is dropped (M4). Milestones were renumbered: deploy is now M4, other sources M5, history M6, analysis tools M7.
@@ -16,7 +33,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
 
 ## 2026-10-24: schema additions for statement import
 
-- **Choice:** in M3, add `external_id` (unique with `source`), `kind` (`expense` / `refund` / `transfer`, refunds negative), and `original_amount` / `original_currency`. Nothing changes for M2.
+- **Choice:** in M3, add `external_id` (unique with `source`) and `kind` (`expense` / `refund` / `transfer`, refunds negative). Nothing changes for M2. (`original_amount` / `original_currency` were planned too, then dropped; see the import rules entry.)
 - **Alternatives:** dedupe by matching date + amount at insert time; separate tables for refunds and transfers; lookup tables for categories and payment methods.
 - **Why:** re-uploading a statement must add nothing, which needs a stored key. Card payments and top-ups appear on statements but aren't spending, so they need a flag rather than deletion. Foreign purchases are billed in JPY but bought in another currency, and both amounts matter. Categories stay free text, picked from existing values, because lookup tables add work without a current need.
 
