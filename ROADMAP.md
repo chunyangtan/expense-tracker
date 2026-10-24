@@ -9,6 +9,7 @@ The reasons behind decisions live in `DECISIONS.md`. This file holds the plan an
 ## Done
 
 - **v1 (2026-05-23):** chat over `data/expenses.csv`. The whole CSV goes into the prompt, Haiku answers. `data/` is gitignored because it's personal data.
+- **M1 (2026-10-24):** data moved to Supabase. 21 AppSheet rows imported, the chat reads from the `expenses` table, Haiku 5.5. Schema changes go through `supabase/migrations/` and `npx supabase db push`.
 
 ## Phase 1: in daily use
 
@@ -19,8 +20,8 @@ Each milestone ships on its own. Do them in order.
 - [x] Create a Supabase project. Put `SUPABASE_URL` and the key in `.env.local`
 - [x] Create an `expenses` table using the schema below
 - [x] Write a one-off script that imports `data/expenses.csv` (strip `¥` and commas from amounts, set `currency = 'JPY'`, `source = 'appsheet'`)
-- [ ] Make `app/api/chat/route.ts` read rows from Supabase instead of the file
-- [ ] Update the Haiku model ID (the code still uses `claude-haiku-4-5-20251001`)
+- [x] Make `app/api/chat/route.ts` read rows from Supabase instead of the file
+- [x] Update the Haiku model ID (now `claude-haiku-5-5`)
 
 Done when the chat gives the same answers as before, with the data coming from the database.
 
