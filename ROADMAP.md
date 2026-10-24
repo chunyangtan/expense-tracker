@@ -12,6 +12,7 @@ The reasons behind decisions live in `DECISIONS.md`. This file holds the plan an
 - **M1 (2026-10-24):** data moved to Supabase. 21 AppSheet rows imported, the chat reads from the `expenses` table, Haiku 5.5. Schema changes go through `supabase/migrations/` and `npx supabase db push`.
 - **Overview page (2026-10-24):** `/dashboard` shows the latest month, the month before, monthly totals and a category breakdown, per currency. Plain HTML/CSS bars, no chart library.
 - **Expense list (2026-10-24):** `/expenses` lists every expense, newest first, grouped by day.
+- **M2 (2026-10-24):** `/add` logs cash expenses, defaulting to today, Cash and JPY, with the last 10 entries below. A real entry saved in about a second.
 
 ## Phase 1: in daily use
 
@@ -27,7 +28,7 @@ Each milestone ships on its own. Do them in order.
 
 Done when the chat gives the same answers as before, with the data coming from the database.
 
-### M2: add cash expenses by hand
+### M2: add cash expenses by hand (done)
 
 Most spending is already digital (Rakuten Card, Rakuten Pay, PayPay, Wise, SMBC Card) and comes in through statement import (M3). The form is for cash.
 
