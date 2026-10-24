@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import { Nav } from "@/app/nav";
 
 type Message = {
   role: "user" | "assistant";
@@ -57,9 +57,7 @@ export default function Home() {
           <h1 className="text-xl font-semibold">Expense Assistant</h1>
           <p className="text-sm text-gray-500">Ask questions about your expenses</p>
         </div>
-        <Link href="/dashboard" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-          Overview
-        </Link>
+        <Nav current="/" />
       </header>
 
       <div className="flex-1 overflow-y-auto py-4 space-y-4">

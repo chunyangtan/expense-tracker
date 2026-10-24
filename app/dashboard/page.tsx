@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Nav } from "@/app/nav";
 import { connection } from "next/server";
 import { supabase } from "@/lib/supabase";
 
@@ -50,9 +50,7 @@ export default async function Dashboard() {
           <h1 className="text-xl font-semibold">Overview</h1>
           <p className="text-sm text-gray-500">{data.length} expenses</p>
         </div>
-        <Link href="/" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
-          Chat
-        </Link>
+        <Nav current="/dashboard" />
       </header>
 
       {data.length === 0 && <p className="mt-16 text-center text-sm text-gray-400">No expenses yet.</p>}

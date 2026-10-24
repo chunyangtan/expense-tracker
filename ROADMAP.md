@@ -11,6 +11,7 @@ The reasons behind decisions live in `DECISIONS.md`. This file holds the plan an
 - **v1 (2026-05-23):** chat over `data/expenses.csv`. The whole CSV goes into the prompt, Haiku answers. `data/` is gitignored because it's personal data.
 - **M1 (2026-10-24):** data moved to Supabase. 21 AppSheet rows imported, the chat reads from the `expenses` table, Haiku 5.5. Schema changes go through `supabase/migrations/` and `npx supabase db push`.
 - **Overview page (2026-10-24):** `/dashboard` shows the latest month, the month before, monthly totals and a category breakdown, per currency. Plain HTML/CSS bars, no chart library.
+- **Expense list (2026-10-24):** `/expenses` lists every expense, newest first, grouped by day.
 
 ## Phase 1: in daily use
 
