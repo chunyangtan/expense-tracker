@@ -4,13 +4,35 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-24: card data comes from statement CSVs, cash by hand
+
+- **Choice:** most spending is digital (Rakuten Card, Rakuten Pay, PayPay, Wise, SMBC Card), so only cash is entered by hand (M2) and card data comes from each source's statement CSV. A Rakuten Card–only import (M3) moves into Phase 1, before AppSheet is dropped (M4). Milestones were renumbered: deploy is now M4, other sources M5, history M6, analysis tools M7.
+- **Alternatives:** export from Rakuten 家計簿, which already aggregates these accounts; keep entering card spending by hand until a later import milestone; keep Rakuten 家計簿 for cards and only move cash here.
+- **Why:**
+  - Rakuten 家計簿 has no CSV export or public API (checked its help page on 2026-10-24), and scraping the app would be fragile.
+  - Statement CSVs are the original records, and each source offers them (Rakuten Card via e-NAVI on the PC site).
+  - With the import after Phase 1, stopping AppSheet would leave card spending unrecorded. Rakuten Card is the biggest source, so importing just that is the smallest step that keeps the data complete.
+  - Wallets topped up from a card show each purchase twice, so each payment flow is counted from one source only and top-ups are marked as transfers.
+
+## 2026-10-24: schema additions for statement import
+
+- **Choice:** in M3, add `external_id` (unique with `source`), `kind` (`expense` / `refund` / `transfer`, refunds negative), and `original_amount` / `original_currency`. Nothing changes for M2.
+- **Alternatives:** dedupe by matching date + amount at insert time; separate tables for refunds and transfers; lookup tables for categories and payment methods.
+- **Why:** re-uploading a statement must add nothing, which needs a stored key. Card payments and top-ups appear on statements but aren't spending, so they need a flag rather than deletion. Foreign purchases are billed in JPY but bought in another currency, and both amounts matter. Categories stay free text, picked from existing values, because lookup tables add work without a current need.
+
+## 2026-10-24: bank accounts after Phase 1 (M8)
+
+- **Choice:** accounts, balances and income come after Phase 1, after statement import, as M8.
+- **Alternatives:** add them in Phase 1; make them a separate project.
+- **Why:** bank statements reuse the M3/M5 import flow, and balances are more sensitive than expenses, so M4's auth and RLS must exist first. It stays in this app because it's the same data. Only account names and balances are stored, never credentials or full account numbers.
+
 ## 2026-10-24: Supabase for data, auth and storage
 
-- **Choice:** Supabase (hosted Postgres) as the database from M1, and later for auth (M3) and receipt storage.
+- **Choice:** Supabase (hosted Postgres) as the database from M1, and later for auth (M4) and receipt storage.
 - **Alternatives:** Firebase, Neon / PlanetScale / Vercel Postgres, SQLite or Turso, keeping Google Sheets or AppSheet.
 - **Why:**
   - Over Firebase: real Postgres and SQL. Spending data is relational (totals by category, month, currency), which is awkward in a document store. No lock-in, since a `pg_dump` takes the data anywhere.
-  - Over Neon, PlanetScale or Vercel Postgres: those are only databases. Supabase also gives auth, row-level security and file storage, which M3 and receipt photos need, without adding separate services for each.
+  - Over Neon, PlanetScale or Vercel Postgres: those are only databases. Supabase also gives auth, row-level security and file storage, which M4 and receipt photos need, without adding separate services for each.
   - Over SQLite or Turso: Vercel's filesystem doesn't keep files between requests, so a local SQLite file won't work there. Turso fixes that but has no auth or storage.
   - Over Google Sheets or AppSheet: those are what this app replaces. They're slow to query, have no real types, and are clunky to write to from an app.
   - Overall: the free tier is enough for one user, the client is TypeScript, and it's widely used with Next.js and Vercel.
@@ -28,7 +50,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
 
 - **Choice:** put the whole expense CSV in the prompt and let Claude answer.
 - **Alternative:** set up a database (Supabase) from the start.
-- **Why:** it's the simplest path to a working app, with no schema migrations, ORM or infrastructure, and it's cheap for a small personal dataset. Move to Supabase once cash input and statement import arrive (M1). When the data gets too big for the prompt, give Claude query tools rather than building a RAG pipeline (M6).
+- **Why:** it's the simplest path to a working app, with no schema migrations, ORM or infrastructure, and it's cheap for a small personal dataset. Move to Supabase once cash input and statement import arrive (M1). When the data gets too big for the prompt, give Claude query tools rather than building a RAG pipeline (M7).
 
 ## 2026-05-23: Haiku for development
 
@@ -39,7 +61,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
 ## 2026-05-23: leave out the 2017–2019 data
 
 - **Choice:** don't import the 2017–2019 expense files.
-- **Why:** they're monthly category totals, not row-level transactions, so importing them would create fake precision. The 2020 and 2023 files are row-level and get imported in M5.
+- **Why:** they're monthly category totals, not row-level transactions, so importing them would create fake precision. The 2020 and 2023 files are row-level and get imported in M6.
 
 ## 2026-05-23: the AppSheet schema is the target schema
 
