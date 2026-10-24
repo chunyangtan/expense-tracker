@@ -79,6 +79,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
   - It bills per request. Railway, Render and Fly run a container all the time, which means paying monthly or a sleeping free tier whose first load takes seconds, too slow for logging a purchase in 15 seconds. A VPS means maintaining the OS, TLS and deploys.
   - The Hobby plan covers personal, non-commercial use, which one user's traffic fits easily. You get push-to-deploy, preview URLs and environment variables in a dashboard.
   - Downsides: Hobby is non-commercial only, and server functions have time limits, which matters if an import or chat ever runs long. Lock-in is low, since `next start` runs the same app anywhere.
+- **Region:** functions run in Singapore (`sin1`, set in `vercel.json`), next to the Supabase project (`ap-southeast-1`). Each page makes several database queries, which stay inside Singapore. A request from Japan crosses to Singapore once (about 70 ms), and Malaysia is close. Moving Supabase to Tokyo would need a new project and a data migration, which isn't worth it.
 - **Note:** the stack was chosen before 2026-05-23, but the comparison wasn't written down. These reasons were reconstructed on 2026-10-24 and confirmed by me.
 
 ## 2026-10-24: Supabase for data, auth and storage
