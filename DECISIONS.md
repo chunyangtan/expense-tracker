@@ -4,6 +4,16 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-24: Vercel MCP server only, not the Vercel plugin
+
+- **Choice:** add the Vercel MCP server (`mcp.vercel.com`) to this project's `.mcp.json`, so Claude Code can read deployments, logs and environment variables.
+- **Alternatives:** the full `vercel/vercel-plugin`; the Vercel CLI only (`npx vercel` after `vercel login`).
+- **Why:**
+  - Reading production logs and deployment status is the one thing Claude Code couldn't do after deploy.
+  - The full plugin adds session-start hooks that run in every Next.js project and add a map of Vercel's products to the context on every task, plus 37 mostly irrelevant skills, telemetry on by default, and a Bun dependency.
+  - The MCP server alone gives the useful part, scoped to this repo.
+  - The CLI also works, and stays as the fallback.
+
 ## 2026-10-24: auth checked on the server, data stays server-only
 
 - **Choice:**
