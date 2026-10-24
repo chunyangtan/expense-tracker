@@ -2,7 +2,7 @@
 
 A personal expense tracker with a Claude chat over my own spending data (JPY and MYR, cash and card).
 
-Built with Next.js, the Claude API, Supabase and Vercel. See [ROADMAP.md](ROADMAP.md) for the plan, current status and data schema.
+Built with Next.js, the Claude API, Supabase and Vercel. See [ROADMAP.md](ROADMAP.md) for the plan and current status, and [docs/data-model.md](docs/data-model.md) for the data.
 
 ## Run locally
 

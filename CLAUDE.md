@@ -1,6 +1,6 @@
 # expense-tracker
 
-A personal expense tracker: a Claude chat over my own spending data (JPY and MYR, cash and card), growing toward replacing AppSheet for daily entry. `ROADMAP.md` has the plan, current milestone and data schema. Update it when a milestone task lands. `DECISIONS.md` has the reasons behind each choice.
+A personal expense tracker: a Claude chat over my own spending data (JPY and MYR, cash and card), growing toward replacing AppSheet for daily entry. `ROADMAP.md` has the plan and current milestone. Update it when a milestone task lands. `docs/data-model.md` has the tables and the rules every feature follows, such as leaving transfers out of totals. Read it before touching data, and update it when a rule changes. `DECISIONS.md` has the reasons behind each choice.
 
 ## Next.js here is newer than your training data
 

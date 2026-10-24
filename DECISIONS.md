@@ -93,5 +93,5 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
 
 ## 2026-05-23: the AppSheet schema is the target schema
 
-- **Choice:** use the AppSheet columns as the base schema, plus currency and import-source fields (see Schema in `ROADMAP.md`).
+- **Choice:** use the AppSheet columns as the base schema, plus currency and import-source fields (see `docs/data-model.md`).
 - **Why:** the 2026 AppSheet data was already well structured, so it's the base that everything else maps into.

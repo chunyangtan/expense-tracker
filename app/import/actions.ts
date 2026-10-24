@@ -101,7 +101,6 @@ export async function commitStatements(rows: PreviewRow[]): Promise<{ inserted: 
         source: SOURCE,
         raw_description: r.raw_description,
         external_id: r.external_id,
-        modified_at: new Date().toISOString(),
       })
       .eq("id", r.match!.id);
     if (error) return { inserted: inserts.length, merged: 0, error: error.message };

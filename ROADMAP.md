@@ -22,7 +22,7 @@ Each milestone ships on its own. Do them in order.
 ### M1: move the data to Supabase
 
 - [x] Create a Supabase project. Put `SUPABASE_URL` and the key in `.env.local`
-- [x] Create an `expenses` table using the schema below
+- [x] Create an `expenses` table (see `docs/data-model.md`)
 - [x] Write a one-off script that imports `data/expenses.csv` (strip `¥` and commas from amounts, set `currency = 'JPY'`, `source = 'appsheet'`)
 - [x] Make `app/api/chat/route.ts` read rows from Supabase instead of the file
 - [x] Update the Haiku model ID (now `claude-haiku-5-5`)
@@ -44,7 +44,7 @@ Done when I can log a cash purchase in under 15 seconds.
 
 The smallest statement import, so card spending doesn't go unrecorded once AppSheet stops. Rakuten 家計簿 has no export or API, so data comes from each source's own statement CSV. Rakuten Card's comes from e-NAVI (PC site only). The CSVs are kept in Google Drive under `Finance/Credit Card - Rakuten`.
 
-- [x] Schema additions (see Schema): `external_id`, `kind`
+- [x] Schema additions: `external_id`, `kind`
 - [x] `/import`: upload one or more CSVs, parse them (`lib/statements/rakuten-card.ts`), keep the original text in `raw_description`, set `source = 'statement:rakuten-card'`
 - [x] Fixed rules for 楽天キャッシュ チャージ, Suica top-ups and ふるさと納税; Claude suggests the rest from the existing values (`lib/statements/categorise.ts`)
 - [x] A row with the same date and amount as an earlier non-cash entry merges into it: the statement's name, the existing category, the old name kept in notes
@@ -71,30 +71,6 @@ Done when a week of spending is logged here (cash by hand, Rakuten Card by impor
 - **M8, accounts and balances:** grow into a personal finance tracker. An `accounts` table (name, institution, type, currency), balance snapshots, income, and bank statement import through the M3/M5 flow. Needs M4's auth and RLS first. Store account names and balances only, never login credentials or full account numbers.
 - **Later:** receipt photos (`receipt_url`, Supabase storage, merged with `photos`), tags, monthly summaries.
 
-## Schema
+## Data model
 
-The base is the AppSheet columns, which were already well structured:
-
-| Column | Type | Notes |
-|---|---|---|
-| id | uuid | generated; the AppSheet Row ID is a plain counter and isn't kept |
-| date | date | |
-| item_name | text | |
-| category | text | e.g. `Variable (変動費)` |
-| sub_category | text | |
-| payment_method | text | |
-| amount | numeric | no currency sign |
-| notes | text | |
-| photos | text | carried over from AppSheet |
-| created_at, modified_at | timestamptz | |
-
-New columns: `currency` (`JPY` or `MYR`), `source` (`appsheet`, `manual`, `statement:<bank>`), `raw_description`, `receipt_url`, `tags` (text[]). Month-Year isn't stored, because it can be worked out from `date`.
-
-Added in M3, for statement import:
-
-| Column | Type | Notes |
-|---|---|---|
-| external_id | text | the statement's own ID, or a hash of date + amount + raw description; unique together with `source` |
-| kind | text | `expense` (default), `refund`, `transfer`. Refunds are negative amounts. Transfers (card payments, wallet top-ups) aren't spending |
-
-Foreign card purchases have no column of their own: the statement's local-amount line (`現地利用額 … 変換レート …`) is appended to `raw_description`, because it gives the amount and rate but not the currency. The `currency` check may need to allow more than JPY and MYR once Wise is imported (M5).
+Tables, columns and the rules every feature follows are in `docs/data-model.md`.
