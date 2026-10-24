@@ -1,5 +1,5 @@
 // Writes every expense to data/backups/expenses-YYYY-MM-DD.csv (gitignored).
-// Run with: npm run backup, then put the file in Google Drive.
+// Run with: npm run backup, then upload the file to Google Drive under Finance/Expense Tracker Backups.
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createClient } from "@supabase/supabase-js";

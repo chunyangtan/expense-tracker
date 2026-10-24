@@ -11,7 +11,7 @@ This is Next.js 16 with React 19 and Tailwind 4. APIs, conventions and file stru
 - `npm run dev`: dev server at http://localhost:3000
 - `npm run lint` and `npx tsc --noEmit`: run both before calling a change done
 - `npm run build`: production build check
-- `npm run backup`: dated CSV of all expenses in `data/backups/`, to keep in Google Drive
+- `npm run backup`: dated CSV of all expenses in `data/backups/`. Monthly, upload it to Google Drive under `Finance/Expense Tracker Backups`
 
 ## Layout
 
