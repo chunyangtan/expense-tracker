@@ -9,8 +9,9 @@ export type Options = {
   paymentMethods: string[];
 };
 
+// text-base on phones: iOS Safari zooms into inputs with text under 16px.
 const field =
-  "w-full rounded-md border border-gray-300 dark:border-gray-600 bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-blue-500";
+  "w-full rounded-md border border-gray-300 dark:border-gray-600 bg-transparent px-3 py-2 text-base sm:text-sm focus:outline-none focus:border-blue-500";
 const label = "block text-xs font-medium text-gray-500 mb-1";
 
 export function AddForm({ options, today }: { options: Options; today: string }) {
@@ -43,11 +44,11 @@ export function AddForm({ options, today }: { options: Options; today: string })
           {[...new Set(subs)].map((s) => <option key={s} value={s} />)}
         </datalist>
       </div>
-      <div>
+      <div className="col-span-2 sm:col-span-1">
         <label htmlFor="date" className={label}>Date</label>
         <input id="date" name="date" type="date" required defaultValue={today} className={field} />
       </div>
-      <div className="grid grid-cols-[1fr_auto] gap-2">
+      <div className="col-span-2 sm:col-span-1 grid grid-cols-[1fr_auto] gap-2">
         <div>
           <label htmlFor="payment_method" className={label}>Paid with</label>
           <input id="payment_method" name="payment_method" list="payment-methods" defaultValue="Cash" autoComplete="off" className={field} />

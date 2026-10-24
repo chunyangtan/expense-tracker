@@ -11,7 +11,7 @@ export default async function ImportPage() {
 
   return (
     <main className="max-w-3xl w-full mx-auto px-4 pb-12">
-      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex items-baseline justify-between">
+      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
         <div>
           <h1 className="text-xl font-semibold">Import statements</h1>
           <p className="text-sm text-gray-500">Rakuten Card CSVs from e-NAVI. Review, then import.</p>

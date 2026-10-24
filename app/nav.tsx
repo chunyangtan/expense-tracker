@@ -12,7 +12,7 @@ const pages = [
 // Links to the other pages, for each page's header.
 export function Nav({ current }: { current: string }) {
   return (
-    <nav className="flex gap-4 text-sm">
+    <nav className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
       {pages
         .filter((p) => p.href !== current)
         .map((p) => (

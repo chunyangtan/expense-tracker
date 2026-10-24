@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-col h-screen max-w-2xl mx-auto px-4">
-      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex items-baseline justify-between">
+      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
         <div>
           <h1 className="text-xl font-semibold">Expense Assistant</h1>
           <p className="text-sm text-gray-500">Ask questions about your expenses</p>
