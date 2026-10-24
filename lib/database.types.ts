@@ -102,6 +102,33 @@ export type Database = {
         }
         Relationships: []
       }
+      expenses_history: {
+        Row: {
+          changed_at: string
+          expense_id: string
+          id: number
+          new_row: Json | null
+          old_row: Json | null
+          operation: string
+        }
+        Insert: {
+          changed_at?: string
+          expense_id: string
+          id?: never
+          new_row?: Json | null
+          old_row?: Json | null
+          operation: string
+        }
+        Update: {
+          changed_at?: string
+          expense_id?: string
+          id?: never
+          new_row?: Json | null
+          old_row?: Json | null
+          operation?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

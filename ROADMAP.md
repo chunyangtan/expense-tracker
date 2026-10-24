@@ -12,6 +12,7 @@ The reasons behind decisions live in `DECISIONS.md`. This file holds the plan an
 - **M1 (2026-10-24):** data moved to Supabase. 21 AppSheet rows imported, the chat reads from the `expenses` table, Haiku 5.5. Schema changes go through `supabase/migrations/` and `npx supabase db push`.
 - **Overview page (2026-10-24):** `/dashboard` shows the latest month, the month before, monthly totals and a category breakdown, per currency. Plain HTML/CSS bars, no chart library.
 - **Expense list (2026-10-24):** `/expenses` lists every expense, newest first, grouped by day.
+- **Change history and backups (2026-10-24):** a trigger writes every insert, update and delete on `expenses` to `expenses_history` (old and new row as JSON), starting from a baseline snapshot of all 531 rows. A second trigger sets `modified_at`. `npm run backup` writes `data/backups/expenses-YYYY-MM-DD.csv`.
 - **M2 (2026-10-24):** `/add` logs cash expenses, defaulting to today, Cash and JPY, with the last 10 entries below. A real entry saved in about a second.
 
 ## Phase 1: in daily use
@@ -48,7 +49,8 @@ The smallest statement import, so card spending doesn't go unrecorded once AppSh
 - [x] Fixed rules for 楽天キャッシュ チャージ, Suica top-ups and ふるさと納税; Claude suggests the rest from the existing values (`lib/statements/categorise.ts`)
 - [x] A row with the same date and amount as an earlier non-cash entry merges into it: the statement's name, the existing category, the old name kept in notes
 - [x] Review the rows, then insert. Rows whose `(source, external_id)` already exists are skipped
-- [ ] Import the 12 months in Drive (2025-09 to 2026-10) and check the totals against e-NAVI
+- [x] Import the 12 months in Drive (2025-09 to 2026-10): 513 rows, 4 merged into AppSheet entries
+- [ ] Check a month's total against e-NAVI, and categorise the 2 rows left without one
 
 Done when a month's Rakuten Card statement is in the table with categories, and re-uploading it adds nothing.
 
@@ -65,7 +67,7 @@ Done when a week of spending is logged here (cash by hand, Rakuten Card by impor
 
 - **M5, more statement sources:** one parser per source, reusing M3's review and dedup flow: SMBC Card (Vpass), PayPay, Rakuten Pay, Wise. Count each payment flow once: if a wallet is topped up from a card, import the purchases from one side only and mark top-ups as `kind = 'transfer'`.
 - **M6, history:** import the row-level 2020 and 2023 files. Leave out 2017–2019, because those files only have monthly category totals.
-- **M7, better analysis:** once the data is too big to put the whole table in the prompt, give Claude tools (query by date, category or currency) in place of the full dump. Use Sonnet in production.
+- **M7, better analysis:** the pages and the chat read the table in one request, and the API returns at most 1000 rows per request, so they need paging or aggregate queries before the table passes 1000 rows (531 on 2026-10-24, roughly 45 a month). Once the data is too big to put the whole table in the prompt, give Claude tools (query by date, category or currency) in place of the full dump. Use Sonnet in production.
 - **M8, accounts and balances:** grow into a personal finance tracker. An `accounts` table (name, institution, type, currency), balance snapshots, income, and bank statement import through the M3/M5 flow. Needs M4's auth and RLS first. Store account names and balances only, never login credentials or full account numbers.
 - **Later:** receipt photos (`receipt_url`, Supabase storage, merged with `photos`), tags, monthly summaries.
 

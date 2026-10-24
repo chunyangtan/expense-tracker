@@ -4,6 +4,17 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-24: change history by trigger, backups by CSV
+
+- **Choice:** a database trigger copies every insert, update and delete on `expenses` into `expenses_history`, with the old and new row as JSON. `npm run backup` writes a dated CSV of the whole table, kept in Google Drive.
+- **Alternatives:** Supabase's request logs; the `supa_audit` extension; point-in-time recovery or daily backups on the Pro plan; recording changes in the app code.
+- **Why:**
+  - Supabase is the only complete copy of the data (cash entries exist nowhere else), and the free plan's logs are short-lived and don't show before/after values.
+  - A trigger records edits from every path, including the Supabase dashboard, which app-level logging would miss.
+  - A plain table and trigger is a few lines of SQL with no extension to learn. Pro-plan backups cost money this project doesn't need yet.
+  - A CSV opens anywhere, and Drive is where personal files already live.
+  - History started after the first Rakuten Card import, so it opens with a baseline snapshot of every row.
+
 ## 2026-10-24: Rakuten Card import rules
 
 - **Choice:**

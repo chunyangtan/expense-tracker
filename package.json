@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "import:appsheet": "node --env-file=.env.local scripts/import-appsheet.mts"
+    "import:appsheet": "node --env-file=.env.local scripts/import-appsheet.mts",
+    "backup": "node --env-file=.env.local scripts/backup.mts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.98.0",
