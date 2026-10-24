@@ -64,4 +64,6 @@ Append-only change log, written by a trigger on `expenses`. Readable by the serv
 
 ## Access
 
-Until M4, only the server reads and writes, using the secret key (`lib/supabase.ts`, never imported by client components). Row-level security is on and has no policies, so the public and logged-in API roles can't read anything.
+Only the server reads and writes data, using the secret key (`lib/supabase.ts`, marked `server-only`). Row-level security is on with no policies, so the browser's API roles (anon and authenticated) can't read or write anything.
+
+Before any data access, every page and Server Action calls `requireUser()`, and the chat route calls `currentUser()` (`lib/auth.ts`). They pass only for a Supabase Auth session whose email is `ALLOWED_EMAIL`. `proxy.ts` refreshes the session cookie and redirects signed-out visitors to `/login`, but it's only the early check; the real one is in each page, action and route. A new page or Server Action that skips `requireUser()` exposes data.

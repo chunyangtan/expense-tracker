@@ -2,13 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
+import { requireUser } from "@/lib/auth";
 
 export type AddState = { ok: boolean; message: string };
 
 const text = (v: FormDataEntryValue | null) => (typeof v === "string" && v.trim() ? v.trim() : null);
 
-// No auth until M4: the app only runs locally, same as the chat endpoint.
 export async function addExpense(_prev: AddState, formData: FormData): Promise<AddState> {
+  await requireUser();
   const date = text(formData.get("date"));
   const item = text(formData.get("item_name"));
   const currency = text(formData.get("currency"));

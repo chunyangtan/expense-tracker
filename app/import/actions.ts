@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
+import { requireUser } from "@/lib/auth";
 import { parseRakutenCard, SOURCE, type StatementRow } from "@/lib/statements/rakuten-card";
 import { suggestCategories } from "@/lib/statements/categorise";
 
@@ -19,8 +20,8 @@ export type Preview = {
 
 const PAYMENT_METHOD = "Rakuten Credit Card";
 
-// No auth until M4: the app only runs locally, same as the chat endpoint.
 export async function previewStatements(formData: FormData): Promise<Preview> {
+  await requireUser();
   const files = formData.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
   if (!files.length) return { rows: [], alreadyImported: 0, files: 0, error: "Choose at least one CSV." };
 
@@ -60,6 +61,7 @@ export async function previewStatements(formData: FormData): Promise<Preview> {
 }
 
 export async function commitStatements(rows: PreviewRow[]): Promise<{ inserted: number; merged: number; error?: string }> {
+  await requireUser();
   const merges = rows.filter((r) => r.match);
   const inserts = rows.filter((r) => !r.match);
 

@@ -56,7 +56,7 @@ Done when a month's Rakuten Card statement is in the table with categories, and 
 
 ### M4: deploy and use it on my phone
 
-- [ ] Supabase auth, single user (me), with row-level security on `expenses`
+- [x] Supabase auth, single user (me), with row-level security on `expenses`: email and password, sign-ups off, `ALLOWED_EMAIL` checked on every page, Server Action and route (`lib/auth.ts`), `proxy.ts` refreshes the session
 - [ ] Deploy to Vercel and set the environment variables
 - [ ] Make the form work at phone width
 - [ ] Stop entering expenses in AppSheet

@@ -1,10 +1,10 @@
-import { connection } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { requireUser } from "@/lib/auth";
 import { Nav } from "@/app/nav";
 import { Import } from "@/app/import/review";
 
 export default async function ImportPage() {
-  await connection();
+  await requireUser();
   const { data, error } = await supabase.from("expenses").select("category, sub_category");
   if (error) throw error;
   const distinct = (values: (string | null)[]) => [...new Set(values.filter((v): v is string => !!v))].sort();

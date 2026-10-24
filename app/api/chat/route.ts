@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { supabase } from "@/lib/supabase";
+import { currentUser } from "@/lib/auth";
 
 const client = new Anthropic();
 
 export async function POST(request: NextRequest) {
+  if (!(await currentUser())) {
+    return NextResponse.json({ error: "Sign in first" }, { status: 401 });
+  }
+
   const { question } = await request.json();
 
   if (!question?.trim()) {

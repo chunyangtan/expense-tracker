@@ -1,6 +1,6 @@
 import { Nav } from "@/app/nav";
-import { connection } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { requireUser } from "@/lib/auth";
 
 type Expense = { date: string; amount: number; currency: string; category: string | null };
 
@@ -34,7 +34,7 @@ function sumBy(rows: Expense[], key: (r: Expense) => string) {
 }
 
 export default async function Dashboard() {
-  await connection();
+  await requireUser();
   const { data, error } = await supabase
     .from("expenses")
     .select("date, amount, currency, category")

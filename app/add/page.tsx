@@ -1,5 +1,5 @@
-import { connection } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { requireUser } from "@/lib/auth";
 import { Nav } from "@/app/nav";
 import { AddForm, type Options } from "@/app/add/form";
 
@@ -15,7 +15,7 @@ function byUse(values: (string | null)[]) {
 }
 
 export default async function Add() {
-  await connection();
+  await requireUser();
   const [values, recent] = await Promise.all([
     supabase.from("expenses").select("category, sub_category, payment_method"),
     supabase

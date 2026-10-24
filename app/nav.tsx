@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { signOut } from "@/app/login/actions";
 
 const pages = [
   { href: "/", label: "Chat" },
@@ -19,6 +20,9 @@ export function Nav({ current }: { current: string }) {
             {p.label}
           </Link>
         ))}
+      <form action={signOut}>
+        <button className="text-gray-500 hover:underline">Sign out</button>
+      </form>
     </nav>
   );
 }

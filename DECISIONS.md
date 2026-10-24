@@ -4,6 +4,22 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-24: auth checked on the server, data stays server-only
+
+- **Choice:**
+  - Supabase Auth with email and password, sign-ups turned off, and a single `ALLOWED_EMAIL`.
+  - Every page, Server Action and route checks the session on the server. Data access stays on the server with the secret key.
+  - Row-level security stays on with no policies.
+- **Alternatives:**
+  - RLS policies tied to the logged-in user (a `user_id` column), with queries running as that user.
+  - Magic-link login.
+  - Relying on `proxy.ts` alone.
+- **Why:**
+  - The browser never talks to Supabase directly; everything goes through Server Components, Server Actions and the chat route. So RLS's job is to block the public API completely, which "on, no policies" already does. Per-user policies would add a column and a second client to protect one user from themselves.
+  - The `ALLOWED_EMAIL` check means an account created by mistake still sees nothing.
+  - A password works with a password manager on the phone. Magic links rely on Supabase's rate-limited default email and open a new browser tab on the phone.
+  - Next.js 16 documents Proxy as an optimistic check only, not authorisation, so the real check sits next to the data access.
+
 ## 2026-10-24: change history by trigger, backups by CSV
 
 - **Choice:** a database trigger copies every insert, update and delete on `expenses` into `expenses_history`, with the old and new row as JSON. `npm run backup` writes a dated CSV of the whole table, kept in Google Drive.

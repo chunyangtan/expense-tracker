@@ -1,5 +1,5 @@
-import { connection } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { requireUser } from "@/lib/auth";
 import { Nav } from "@/app/nav";
 
 function money(amount: number, currency: string) {
@@ -16,7 +16,7 @@ function dayLabel(date: string) {
 }
 
 export default async function Expenses() {
-  await connection();
+  await requireUser();
   const { data, error } = await supabase
     .from("expenses")
     .select("id, date, item_name, category, sub_category, payment_method, amount, currency, notes")
