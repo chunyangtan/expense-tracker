@@ -43,3 +43,5 @@ next-env.d.ts
 # local env files
 .env.local
 data/
+# claude code personal settings
+.claude/settings.local.json
