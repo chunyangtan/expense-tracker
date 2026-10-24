@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "@/lib/database.types";
+import { supabase } from "@/lib/supabase";
 
 const client = new Anthropic();
-
-// Server-only: the secret key bypasses RLS, so it must never reach the browser.
-const supabase = createClient<Database>(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!,
-  { auth: { persistSession: false } },
-);
 
 export async function POST(request: NextRequest) {
   const { question } = await request.json();

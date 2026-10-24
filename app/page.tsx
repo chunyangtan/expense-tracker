@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 
 type Message = {
   role: "user" | "assistant";
@@ -51,9 +52,14 @@ export default function Home() {
 
   return (
     <main className="flex flex-col h-screen max-w-2xl mx-auto px-4">
-      <header className="py-4 border-b border-gray-200 dark:border-gray-700">
-        <h1 className="text-xl font-semibold">Expense Assistant</h1>
-        <p className="text-sm text-gray-500">Ask questions about your expenses</p>
+      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex items-baseline justify-between">
+        <div>
+          <h1 className="text-xl font-semibold">Expense Assistant</h1>
+          <p className="text-sm text-gray-500">Ask questions about your expenses</p>
+        </div>
+        <Link href="/dashboard" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+          Overview
+        </Link>
       </header>
 
       <div className="flex-1 overflow-y-auto py-4 space-y-4">
