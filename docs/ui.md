@@ -43,15 +43,17 @@ Budgets slot in under the total later, as a progress bar per category. Not now.
 
 ### Add
 
-Amount first, then one tap for the category, then save. Everything else has a default.
+Amount first, then the item, which usually brings its category with it, then save. Everything else has a default. The category picker has to stay fast as categories and sub-categories grow, so the page never lists them all.
 
 1. The book switch, set to the book last used. Amount field below it, focused on open, large, with the native decimal keyboard. The book sets the currency.
-2. Frequent items: chips for the most-used item names. Tapping one fills item and category.
-3. Category grid: the 8 most-used sub-categories as buttons, each tagged with its category. "More…" opens the full list.
-4. Item name, with suggestions from past items. Picking a past item also sets the category it last had.
+2. Item name, with suggestions from past items, and chips for the most-used items in this book. Picking a past item fills the category it had last time, with a line saying so ("Category filled from the last time: Cafe"). Most entries are repeats, so this sets the category for most of them.
+3. Category: up to 6 chips for this book's most-used sub-categories over the last 90 days, each with its top category's colour. The current choice is always among them. The selected path shows under the chips (`Variable (変動費) › Cafe`).
+4. "All categories" opens a sheet with a search box at the top and every sub-category grouped under its top category, most used first, with use counts. Search matches English and Japanese keywords (`cafe`, `医療`). When nothing matches exactly, the sheet offers "+ New sub-category" with the search text, so new ones are made at the moment they're needed.
 5. Chips for date (Today, Yesterday, or a picker) and paid with (Cash default).
 6. Notes, collapsed behind "Add note".
 7. Save, fixed at the bottom within thumb reach. After saving, the form resets for the next entry and a toast shows "Saved · Undo" for a few seconds.
+
+Edit uses the same picker. Managing the list (rename, merge, hide unused) goes in More › Categories, later.
 
 ### Edit
 

@@ -4,6 +4,17 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-25: category picker that scales
+
+- **Choice:** on Add, the item fills the category from its last use. Below it are 6 chips for the book's most-used sub-categories, plus an "All categories" sheet with search, grouping by top category, use counts and "+ New sub-category".
+- **Alternatives:** the fixed grid of 8 from the first mockup; a two-step picker (top category, then sub-category, as in Zaim and Money Forward ME); a plain dropdown.
+- **Why:**
+  - Sub-categories will keep growing, and a fixed grid either hides most of them or turns into a wall of buttons.
+  - A two-step picker costs two taps on every entry, even for the ones used daily. With three top categories, the first step mostly repeats what the colour dot already shows.
+  - Most entries repeat a past item, so filling the category from the item skips the picker entirely. Usage-ranked chips cover most of the rest in one tap. Search reaches everything else in a few keystrokes, however long the list gets.
+  - Ranking per book matters because Japan and Malaysia spending look different (more Grab and dining out in Malaysia).
+  - Creating a sub-category from the search box avoids a separate settings trip in the middle of logging a purchase.
+
 ## 2026-10-25: separate Japan and Malaysia books
 
 - **Choice:** keep two books, Japan (JPY) and Malaysia (MYR), each with its own transactions, totals and, later, accounts and net worth. A book switch sits at the top of Home, Transactions and Add. Money between them is a transfer with two sides, one in each currency. An entry belongs to the book whose money paid for it.
