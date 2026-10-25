@@ -6,7 +6,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
 
 ## 2026-10-25: everyday UI
 
-- **Choice:** a phone-first app shell with a bottom tab bar (Home, History, ＋, Ask, More), Home as the landing page instead of the chat, an amount-first Add screen, and an Edit screen with a Counts as switch (Expense / Refund / Transfer). The full design is in `docs/ui.md`, with a clickable mockup linked from there. Only the skeleton is designed now. Budgets, recurring costs and the other settings are designed when they're built.
+- **Choice:** a phone-first app shell with a bottom tab bar (Home, Transactions, ＋, Ask, More), Home as the landing page instead of the chat, an amount-first Add screen, and an Edit screen with a Counts as switch (Expense / Refund / Transfer). The full design is in `docs/ui.md`, with a clickable mockup linked from there. Only the skeleton is designed now. Budgets, recurring costs and the other settings are designed when they're built.
 - **Alternatives:**
   - Keep the current pages and polish them (header text links, `/` as chat, one long expense list).
   - Copy one app's layout outright (Money Forward ME or Zaim).
@@ -17,6 +17,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
   - Amount first with one tap for the category is how the fast apps get an entry to a few seconds. The native decimal keyboard does the job without building a custom keypad.
   - Home leads because "where did this month go" is the most common question. The chat is still one tap away as Ask.
   - The Counts as switch exposes `kind`, which the import already sets but nothing could change by hand. Transfers and refunds have to be fixable for the totals to be trusted.
+  - The tab and route are called Transactions rather than History or Expenses because the app grows into a finance tracker (M8), and the same list will hold income and transfers. Naming it now avoids renaming a route and a tab later. The rest of that growth path is in `docs/ui.md`.
   - Designing only the screens needed to stop using AppSheet keeps this from turning into a long design phase. The rest is cheaper to design once I've used the basics for a week.
 
 ## 2026-10-24: Vercel MCP server only, not the Vercel plugin

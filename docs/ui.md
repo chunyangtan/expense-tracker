@@ -11,12 +11,12 @@ A bottom tab bar at every width, on every screen except Add and Edit. Those two 
 | Tab | Route | For |
 |---|---|---|
 | Home | `/` | this month at a glance |
-| History | `/expenses` | every entry, by month, as a list or a calendar |
+| Transactions | `/transactions` | every entry, by month, as a list or a calendar |
 | ＋ (centre, raised) | `/add` | log a purchase |
 | Ask | `/ask` | the Claude chat (moves from `/`) |
 | More | `/more` | import, settings, sign out |
 
-Edit is not a tab: tapping any entry opens `/expenses/[id]`. Import stays at `/import`, reached from More. `/dashboard` folds into Home.
+Edit is not a tab: tapping any entry opens `/transactions/[id]`. `/expenses` redirects to `/transactions`. Import stays at `/import`, reached from More. `/dashboard` folds into Home.
 
 ## Screens
 
@@ -25,13 +25,13 @@ Edit is not a tab: tapping any entry opens `/expenses/[id]`. Import stays at `/i
 - Month header with ‹ › to switch months. Defaults to the current Tokyo month.
 - This month's total, large. A second line per extra currency (e.g. `RM 86.50`), never added to JPY.
 - Against last month (`vs Sep ¥131,900 · +8%`) and the daily average so far.
-- Category breakdown: one stacked bar plus a row per category with amount and share. Tapping a category opens History filtered to it.
+- Category breakdown: one stacked bar plus a row per category with amount and share. Tapping a category opens Transactions filtered to it.
 - Last 6 months as small bars.
 - The 4 latest entries and "See all".
 
 Budgets slot in under the total later, as a progress bar per category. Not now.
 
-### History
+### Transactions
 
 - The same month header, and a List | Calendar switch.
 - Month total and count.
@@ -57,7 +57,7 @@ The Add form, filled in, plus:
 
 - **Counts as:** Expense | Refund | Transfer. Transfer explains that it's left out of totals (data-model rule 1). Refund keeps the amount negative (rule 3).
 - For imported rows, a read-only box with the source and the statement's original text.
-- Save, and Delete behind a confirm dialog. History records both (rule 7).
+- Save, and Delete behind a confirm dialog. The change history records both (rule 7).
 
 ### Ask
 
@@ -76,6 +76,17 @@ Import statements, sign out. Settings join here as they're built (categories, re
 - **Categories:** each top category has one colour used in every chart and tag. Living blue, Variable orange, Special purple.
 - **Empty states** say what to do next ("No expenses in November yet. Tap ＋ to add one.").
 - **Language:** English UI; item names and categories as they're stored (Japanese where they are).
+
+## Growth path: from expense tracker to finance tracker
+
+The app grows into a personal finance tracker covering income, accounts and investments (`ROADMAP.md`, M8). The screens for that are designed when M8 starts, once it's clear which banks and brokers give data and in what form. What's fixed now is the structure, so today's screens grow instead of being redesigned.
+
+- **Home becomes the finance overview.** Net worth on top, then this month's 収支 (income minus spending), then the spending cards designed above. The mockup shows the net-worth card as a dashed "Later" outline so the slot stays reserved. Until accounts exist, the page shows no net-worth card at all.
+- **Home is a stack of independent cards.** Each card (month total, categories, trend, latest) is its own component with its own query, so new cards (net worth, cash flow, budgets) slot in without rewriting the page.
+- **Transactions, not History or Expenses.** The tab and route are named for what they'll hold: spending, income and transfers in one list, filtered by type. `/expenses` only redirects.
+- **The tab bar reshuffles once.** Today: Home, Transactions, ＋, Ask, More. With M8: Home, Transactions, ＋, Assets, More. Ask leaves the bar then, as a button on Home and an item in More. Everything else keeps its place.
+- **Add and Edit grow a type switch.** Edit's Counts as switch (Expense / Refund / Transfer) gains Income, and Add gets the same switch with Expense as the default. No new screen.
+- **Not decided yet:** the data model for income, accounts and investments (including whether income shares the `expenses` table as a new `kind`), the Assets screens, and net-worth and allocation charts.
 
 ## Later, not designed yet
 
