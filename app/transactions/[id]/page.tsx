@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth";
 import { EntryForm } from "@/app/_entry/form";
 import { entryOptions } from "@/app/_entry/options";
 import { money } from "@/app/_entry/values";
+import { today } from "@/lib/dates";
 import { deleteExpense, updateExpense } from "@/app/transactions/[id]/actions";
 import { DeleteButton } from "@/app/transactions/[id]/delete-button";
 
@@ -14,10 +15,21 @@ const sources: Record<string, string> = {
   "statement:rakuten-card": "From a Rakuten Card statement",
 };
 
+// Pages that open an entry, and the label for the way back to them.
+const back: Record<string, string> = { "/to-check": "To check", "/": "Home", "/transactions": "Transactions" };
+
 // Outside the (tabs) group, like /add, so the form gets the whole screen.
-export default async function EditEntry({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditEntry({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
+}) {
   await requireUser();
   const { id } = await params;
+  const { from } = await searchParams;
+  const returnTo = from && from in back ? from : "/transactions";
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
 
   const [row, options] = await Promise.all([
@@ -31,21 +43,21 @@ export default async function EditEntry({ params }: { params: Promise<{ id: stri
   return (
     <main className="max-w-3xl w-full mx-auto px-4 pb-12">
       <header className="py-3 border-b border-gray-200 dark:border-gray-700 flex items-center gap-2">
-        <Link href="/transactions" className="-ml-2 min-h-11 pr-2 flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400">
+        <Link href={returnTo} className="-ml-2 min-h-11 pr-2 flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M15 18l-6-6 6-6" />
           </svg>
-          Transactions
+          {back[returnTo]}
         </Link>
         <h1 className="ml-auto text-xl font-semibold">Edit entry</h1>
       </header>
 
       <EntryForm
+        mode="edit"
         options={options}
-        initial={{ ...e, amount: Math.abs(e.amount) }}
-        action={updateExpense.bind(null, e.id)}
-        submitLabel="Save changes"
-        resetOnSave={false}
+        today={today()}
+        initial={{ ...e, amount: Math.abs(e.amount), confirmed: e.confirmed_at !== null }}
+        action={updateExpense.bind(null, e.id, returnTo)}
       />
 
       <section className="mt-8 rounded-lg bg-gray-100 dark:bg-gray-800 px-4 py-3 text-sm">
@@ -58,7 +70,7 @@ export default async function EditEntry({ params }: { params: Promise<{ id: stri
         </p>
       </section>
 
-      <DeleteButton action={deleteExpense.bind(null, e.id)} summary={`${e.item_name ?? "this entry"}, ${money(e.amount, e.currency)}`} />
+      <DeleteButton action={deleteExpense.bind(null, e.id, returnTo)} summary={`${e.item_name ?? "this entry"}, ${money(e.amount, e.currency)}`} />
     </main>
   );
 }

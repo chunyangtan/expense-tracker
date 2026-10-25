@@ -43,6 +43,7 @@ export type Database = {
         Row: {
           amount: number
           category: string | null
+          confirmed_at: string | null
           created_at: string
           currency: string
           date: string
@@ -63,6 +64,7 @@ export type Database = {
         Insert: {
           amount: number
           category?: string | null
+          confirmed_at?: string | null
           created_at?: string
           currency: string
           date: string
@@ -83,6 +85,7 @@ export type Database = {
         Update: {
           amount?: number
           category?: string | null
+          confirmed_at?: string | null
           created_at?: string
           currency?: string
           date?: string

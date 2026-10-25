@@ -4,12 +4,15 @@ import Link from "next/link";
 import { EntryForm } from "@/app/_entry/form";
 import { entryOptions } from "@/app/_entry/options";
 import { money } from "@/app/_entry/values";
-import { addExpense } from "@/app/add/actions";
+import { addExpense, undoAdd } from "@/app/add/actions";
+import { currentBook } from "@/lib/book";
+import { today as tokyoToday } from "@/lib/dates";
 
 export default async function Add() {
   await requireUser();
-  const [options, recent] = await Promise.all([
+  const [options, book, recent] = await Promise.all([
     entryOptions(),
+    currentBook(),
     supabase
       .from("expenses")
       .select("id, date, item_name, category, sub_category, payment_method, amount, currency")
@@ -18,15 +21,14 @@ export default async function Add() {
   ]);
   if (recent.error) throw recent.error;
 
-  // Japan is home, so "today" is Tokyo's date even when the server runs in UTC.
-  const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Tokyo" });
+  const today = tokyoToday();
 
   return (
     <main className="max-w-3xl w-full mx-auto px-4 pb-12">
       <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold">Add entry</h1>
-          <p className="text-sm text-gray-500">Any payment method. A Rakuten Card entry merges with its statement row when that&apos;s imported.</p>
+          <p className="text-sm text-gray-500">Any payment method, either book.</p>
         </div>
         <Link href="/" aria-label="Close" className="-mr-2 size-11 flex items-center justify-center rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -36,11 +38,23 @@ export default async function Add() {
       </header>
 
       <EntryForm
+        mode="add"
         options={options}
-        initial={{ date: today, item_name: null, category: null, sub_category: null, payment_method: "Cash", amount: null, currency: "JPY", kind: "expense", notes: null }}
+        today={today}
+        initial={{
+          date: today,
+          item_name: null,
+          category: null,
+          sub_category: null,
+          payment_method: options.books[book].lastPayment,
+          amount: null,
+          currency: book,
+          kind: "expense",
+          notes: null,
+          confirmed: true,
+        }}
         action={addExpense}
-        submitLabel="Add entry"
-        resetOnSave
+        undo={undoAdd}
       />
 
       <section className="mt-10">

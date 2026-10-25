@@ -1,6 +1,7 @@
 import "server-only";
 
-export type EntryState = { ok: boolean; message: string };
+// `id` is the row just added, so the toast can undo it.
+export type EntryState = { ok: boolean; message: string; id?: string };
 
 type Row = {
   date: string;
@@ -17,8 +18,8 @@ type Row = {
 const text = (v: FormDataEntryValue | null) => (typeof v === "string" && v.trim() ? v.trim() : null);
 
 // Reads and checks the entry form. The form always takes a positive amount; refunds are stored
-// negative (data-model rule 3).
-export function parseEntry(formData: FormData): { row: Row } | { error: string } {
+// negative (data-model rule 3). `confirmed` is the Checked switch, only on the edit form.
+export function parseEntry(formData: FormData): { row: Row; confirmed: boolean } | { error: string } {
   const date = text(formData.get("date"));
   const item = text(formData.get("item_name"));
   const currency = text(formData.get("currency"));
@@ -27,7 +28,7 @@ export function parseEntry(formData: FormData): { row: Row } | { error: string }
 
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return { error: "Pick a date." };
   if (!item) return { error: "Enter what it was for." };
-  if (currency !== "JPY" && currency !== "MYR") return { error: "Currency must be JPY or MYR." };
+  if (currency !== "JPY" && currency !== "MYR") return { error: "Choose the Japan or Malaysia book." };
   if (kind !== "expense" && kind !== "refund" && kind !== "transfer") return { error: "Choose expense, refund or transfer." };
   if (!Number.isFinite(amount) || amount <= 0) return { error: "Enter an amount above zero." };
 
@@ -43,6 +44,7 @@ export function parseEntry(formData: FormData): { row: Row } | { error: string }
       kind,
       notes: text(formData.get("notes")),
     },
+    confirmed: formData.get("confirmed") === "on",
   };
 }
 
