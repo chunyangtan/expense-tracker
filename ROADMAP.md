@@ -69,9 +69,10 @@ The screens in `docs/ui.md`, built in this order so each step is usable on its o
 
 - [x] Design the core screens (`docs/ui.md`, mockup linked there)
 - [ ] App shell: bottom tab bar, Home at `/`, chat moves to `/ask`, More page
-- [ ] Edit and delete: `/transactions/[id]`, opened from any row, with the Counts as switch
+- [ ] Edit and delete: `/transactions/[id]`, opened from any row, using the same entry form as Add
 - [ ] Transactions (`/transactions`, `/expenses` redirects): month switcher, day totals, search and filter chips, then the calendar view
-- [ ] Add: amount first, item that fills its category, most-used category chips and a searchable category sheet, date and payment chips, Undo toast
+- [ ] Entry form (Add and Edit): amount and type, item that fills its category and payment method, most-used category chips and a searchable sheet, any payment method, date chips, Undo toast
+- [ ] To check: `confirmed_at` column (backfill existing rows), import inserts rows unconfirmed instead of a review step before insert, `/to-check` queue with ✓ per row and Confirm all, Home banner, Transactions filter
 - [ ] Home: this month's total, change from last month, category breakdown, 6-month bars, latest entries
 
 Done when I can add, fix and review a day's spending on my phone without opening Supabase.
