@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Nav } from "@/app/nav";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
-export default function Home() {
+export default function Ask() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -51,13 +50,10 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col h-screen max-w-2xl mx-auto px-4">
-      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-        <div>
-          <h1 className="text-xl font-semibold">Expense Assistant</h1>
-          <p className="text-sm text-gray-500">Ask questions about your expenses</p>
-        </div>
-        <Nav current="/" />
+    <main className="flex flex-col h-[calc(100dvh-4rem-env(safe-area-inset-bottom))] w-full max-w-2xl mx-auto px-4">
+      <header className="py-4 border-b border-gray-200 dark:border-gray-700">
+        <h1 className="text-xl font-semibold">Ask</h1>
+        <p className="text-sm text-gray-500">Questions about your expenses</p>
       </header>
 
       <div className="flex-1 overflow-y-auto py-4 space-y-4">

@@ -15,7 +15,8 @@ This is Next.js 16 with React 19 and Tailwind 4. APIs, conventions and file stru
 
 ## Layout
 
-- `app/page.tsx`: chat UI (client component)
+- `app/(tabs)/`: pages with the bottom tab bar (`layout.tsx`, `tab-bar.tsx`): Home (`page.tsx`), `transactions/`, `ask/` (chat UI, client component), `more/`, `import/`. `app/add/` sits outside so the entry form gets the whole screen
+- `docs/ui.md`: screens and shared UI patterns. Read it before building or changing a screen
 - `app/api/chat/route.ts`: chat endpoint that sends the expense data to Claude
 - `data/`: my real expense exports. Gitignored personal data, never commit it
 - `.env.local`: `ANTHROPIC_API_KEY`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `SUPABASE_PUBLISHABLE_KEY`, `ALLOWED_EMAIL`. Never read or print it

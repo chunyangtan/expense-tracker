@@ -68,7 +68,7 @@ Done when a week of spending is logged here (cash by hand, Rakuten Card by impor
 The screens in `docs/ui.md`, built in this order so each step is usable on its own.
 
 - [x] Design the core screens (`docs/ui.md`, mockup linked there)
-- [ ] App shell: bottom tab bar, Home at `/`, chat moves to `/ask`, More page
+- [x] App shell: bottom tab bar, Home at `/` (the old overview for now), chat moves to `/ask`, `/expenses` becomes `/transactions`, More page (2026-10-25)
 - [ ] Edit and delete: `/transactions/[id]`, opened from any row, using the same entry form as Add
 - [ ] Transactions (`/transactions`, `/expenses` redirects): month switcher, day totals, search and filter chips, then the calendar view
 - [ ] Entry form (Add and Edit): every field of the record visible and editable in both modes (book, amount, counts as, item, category, sub-category, date, paid with, notes; checked in Edit), with shortcut chips for frequent items, sub-categories, dates and payment methods, a searchable sub-category sheet, and an Undo toast

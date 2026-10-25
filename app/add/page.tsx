@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { requireUser } from "@/lib/auth";
-import { Nav } from "@/app/nav";
+import Link from "next/link";
 import { AddForm, type Options } from "@/app/add/form";
 
 function money(amount: number, currency: string) {
@@ -41,12 +41,16 @@ export default async function Add() {
 
   return (
     <main className="max-w-3xl w-full mx-auto px-4 pb-12">
-      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+      <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold">Add expense</h1>
           <p className="text-sm text-gray-500">Cash purchases. Cards come in through statement import.</p>
         </div>
-        <Nav current="/add" />
+        <Link href="/" aria-label="Close" className="-mr-2 size-11 flex items-center justify-center rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </Link>
       </header>
 
       <AddForm options={options} today={today} />

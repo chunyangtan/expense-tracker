@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -16,6 +16,9 @@ export const metadata: Metadata = {
   title: "Expense Tracker",
   description: "Personal expense tracker with a Claude chat",
 };
+
+// viewport-fit=cover lets the tab bar pad itself clear of the iPhone home indicator.
+export const viewport: Viewport = { viewportFit: "cover" };
 
 export default function RootLayout({
   children,

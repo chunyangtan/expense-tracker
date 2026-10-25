@@ -34,8 +34,8 @@ export async function addExpense(_prev: AddState, formData: FormData): Promise<A
   if (error) return { ok: false, message: `Couldn't save: ${error.message}` };
 
   revalidatePath("/add");
-  revalidatePath("/expenses");
-  revalidatePath("/dashboard");
+  revalidatePath("/transactions");
+  revalidatePath("/");
   const shown = new Intl.NumberFormat("en", { style: "currency", currency }).format(amount);
   return { ok: true, message: `Saved ${item}, ${shown}.` };
 }

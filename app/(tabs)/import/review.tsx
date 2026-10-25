@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { commitStatements, previewStatements, type Preview, type PreviewRow } from "@/app/import/actions";
+import { commitStatements, previewStatements, type Preview, type PreviewRow } from "@/app/(tabs)/import/actions";
 
 const field =
   "w-full rounded-md border border-gray-300 dark:border-gray-600 bg-transparent px-2 py-1 text-xs focus:outline-none focus:border-blue-500";

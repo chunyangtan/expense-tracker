@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { requireUser } from "@/lib/auth";
-import { Nav } from "@/app/nav";
-import { Import } from "@/app/import/review";
+import { Import } from "@/app/(tabs)/import/review";
 
 export default async function ImportPage() {
   await requireUser();
@@ -16,7 +15,6 @@ export default async function ImportPage() {
           <h1 className="text-xl font-semibold">Import statements</h1>
           <p className="text-sm text-gray-500">Rakuten Card CSVs from e-NAVI. Review, then import.</p>
         </div>
-        <Nav current="/import" />
       </header>
       <Import categories={distinct(data.map((r) => r.category))} subCategories={distinct(data.map((r) => r.sub_category))} />
     </main>

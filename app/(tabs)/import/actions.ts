@@ -108,8 +108,8 @@ export async function commitStatements(rows: PreviewRow[]): Promise<{ inserted: 
     if (error) return { inserted: inserts.length, merged: 0, error: error.message };
   }
 
-  revalidatePath("/expenses");
-  revalidatePath("/dashboard");
+  revalidatePath("/transactions");
+  revalidatePath("/");
   revalidatePath("/add");
   return { inserted: inserts.length, merged: merges.length };
 }

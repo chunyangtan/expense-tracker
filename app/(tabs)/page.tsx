@@ -1,4 +1,3 @@
-import { Nav } from "@/app/nav";
 import { supabase } from "@/lib/supabase";
 import { requireUser } from "@/lib/auth";
 
@@ -33,7 +32,7 @@ function sumBy(rows: Expense[], key: (r: Expense) => string) {
   return totals;
 }
 
-export default async function Dashboard() {
+export default async function Home() {
   await requireUser();
   const { data, error } = await supabase
     .from("expenses")
@@ -48,10 +47,9 @@ export default async function Dashboard() {
     <main className="max-w-3xl w-full mx-auto px-4 pb-12">
       <header className="py-4 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
         <div>
-          <h1 className="text-xl font-semibold">Overview</h1>
+          <h1 className="text-xl font-semibold">Home</h1>
           <p className="text-sm text-gray-500">{data.length} expenses</p>
         </div>
-        <Nav current="/dashboard" />
       </header>
 
       {data.length === 0 && <p className="mt-16 text-center text-sm text-gray-400">No expenses yet.</p>}
