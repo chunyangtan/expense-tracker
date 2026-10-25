@@ -4,6 +4,19 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-25: separate Japan and Malaysia books
+
+- **Choice:** keep two books, Japan (JPY) and Malaysia (MYR), each with its own transactions, totals and, later, accounts and net worth. A book switch sits at the top of Home, Transactions and Add. Money between them is a transfer with two sides, one in each currency. An entry belongs to the book whose money paid for it.
+- **Alternatives:**
+  - One book with a home currency, converting MYR to JPY at a daily rate (what most apps, including Money Forward ME, do with foreign accounts).
+  - One book with per-currency subtotals side by side on every screen.
+  - Two completely separate apps or logins.
+- **Why:**
+  - I run my Japanese and Malaysian money as two separate households, not as one pot measured in yen. Converted totals would move with the exchange rate even when nothing was spent, and would hide what each side actually costs.
+  - Side-by-side subtotals everywhere (the first mockup's `RM 86.50 in MYR` line) cluttered every screen with a second currency I only care about when I'm dealing with that side.
+  - Separate apps would lose transfers between the two, which are real events (Wise transfers) with a real rate worth seeing.
+  - It extends data-model rule 2 (never add currencies) rather than adding a new idea, and needs no schema change until accounts arrive in M8.
+
 ## 2026-10-25: everyday UI
 
 - **Choice:** a phone-first app shell with a bottom tab bar (Home, Transactions, ＋, Ask, More), Home as the landing page instead of the chat, an amount-first Add screen, and an Edit screen with a Counts as switch (Expense / Refund / Transfer). The full design is in `docs/ui.md`, with a clickable mockup linked from there. Only the skeleton is designed now. Budgets, recurring costs and the other settings are designed when they're built.

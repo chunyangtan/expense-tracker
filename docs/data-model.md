@@ -5,7 +5,7 @@ How the expense data behaves: the tables, what each value means, and the rules e
 ## Rules
 
 1. **Spending totals leave out transfers.** Any query that sums spending filters `kind <> 'transfer'`. Card payments and wallet top-ups move money; they aren't spending. Example: the overview and the chat both use `.neq("kind", "transfer")`.
-2. **Never add amounts in different currencies together.** Totals are per currency.
+2. **Never add amounts in different currencies together.** Totals are per currency, which today means per book: the Japan book is JPY and the Malaysia book is MYR (`docs/ui.md`, Books). An entry belongs to the book whose money paid for it, so a card purchase in Malaysia billed in yen is a JPY row.
 3. **Amounts are positive for spending and negative for refunds**, with `kind = 'refund'`. There is no currency sign in `amount`.
 4. **Count each payment once.** When a wallet is topped up from a card, only one side counts as spending. For now, Rakuten Cash top-ups on the card statement count as spending (Variable / Rakuten Pay (unsplit)). They become transfers once Rakuten Pay history is imported (M5).
 5. **Imports never insert the same row twice.** Every imported row has an `external_id` that's stable across re-uploads, and `(source, external_id)` is unique. If the statement has no transaction ID, hash date + raw description + amount, plus a counter for identical rows in the same file (see `lib/statements/rakuten-card.ts`).
@@ -50,6 +50,10 @@ From the AppSheet data. Sub-categories are free text under them.
 - `Special (特別出費・年数回)`: large or rare purchases, and ふるさと納税
 
 Imports apply fixed rules first (Rakuten Cash top-ups, Suica top-ups, ふるさと納税; in `lib/statements/rakuten-card.ts`). Claude suggests the rest from the existing category and sub-category pairs (`lib/statements/categorise.ts`), and I review them before inserting.
+
+### Books, not stored yet
+
+The Japan and Malaysia books are derived from `currency` for now. Decided with M8, when accounts arrive: whether a book is a column or comes from the account, and how the two sides of a transfer between books are linked (likely a shared id on two `kind = 'transfer'` rows, one per book, each in its own currency).
 
 ## `expenses_history`
 
