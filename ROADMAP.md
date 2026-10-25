@@ -63,6 +63,19 @@ Done when a month's Rakuten Card statement is in the table with categories, and 
 
 Done when a week of spending is logged here (cash by hand, Rakuten Card by import) and not in AppSheet. That closes Phase 1.
 
+### M4.5: everyday UI
+
+The screens in `docs/ui.md`, built in this order so each step is usable on its own.
+
+- [x] Design the core screens (`docs/ui.md`, mockup linked there)
+- [ ] App shell: bottom tab bar, Home at `/`, chat moves to `/ask`, More page
+- [ ] Edit and delete: `/expenses/[id]`, opened from any row, with the Counts as switch
+- [ ] History: month switcher, day totals, search and filter chips, then the calendar view
+- [ ] Add: amount first, frequent items, category grid, date and payment chips, Undo toast
+- [ ] Home: this month's total, change from last month, category breakdown, 6-month bars, latest entries
+
+Done when I can add, fix and review a day's spending on my phone without opening Supabase.
+
 ## After Phase 1
 
 - **M5, more statement sources:** one parser per source, reusing M3's review and dedup flow: SMBC Card (Vpass), PayPay, Rakuten Pay, Wise. Count each payment flow once: if a wallet is topped up from a card, import the purchases from one side only and mark top-ups as `kind = 'transfer'`.

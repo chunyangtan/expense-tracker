@@ -4,6 +4,21 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-25: everyday UI
+
+- **Choice:** a phone-first app shell with a bottom tab bar (Home, History, ＋, Ask, More), Home as the landing page instead of the chat, an amount-first Add screen, and an Edit screen with a Counts as switch (Expense / Refund / Transfer). The full design is in `docs/ui.md`, with a clickable mockup linked from there. Only the skeleton is designed now. Budgets, recurring costs and the other settings are designed when they're built.
+- **Alternatives:**
+  - Keep the current pages and polish them (header text links, `/` as chat, one long expense list).
+  - Copy one app's layout outright (Money Forward ME or Zaim).
+  - Design every screen, budgets and settings included, before building anything.
+- **Why:**
+  - The goal is to use the app every day instead of AppSheet. The current pages are read-only for entries, the nav is small text links, and the list shows every row at once. Each of those makes daily use on a phone harder.
+  - The tab bar, Home summary, month switcher, list/calendar toggle and category grid are what Money Forward ME, Zaim and the smaller 家計簿 apps share (surveyed 2026-10-24), so they're familiar patterns rather than inventions. Bank sync, assets and family sharing are left out because they don't fit a single user who imports statements.
+  - Amount first with one tap for the category is how the fast apps get an entry to a few seconds. The native decimal keyboard does the job without building a custom keypad.
+  - Home leads because "where did this month go" is the most common question. The chat is still one tap away as Ask.
+  - The Counts as switch exposes `kind`, which the import already sets but nothing could change by hand. Transfers and refunds have to be fixable for the totals to be trusted.
+  - Designing only the screens needed to stop using AppSheet keeps this from turning into a long design phase. The rest is cheaper to design once I've used the basics for a week.
+
 ## 2026-10-24: Vercel MCP server only, not the Vercel plugin
 
 - **Choice:** add the Vercel MCP server (`mcp.vercel.com`) to this project's `.mcp.json`, so Claude Code can read deployments, logs and environment variables.
