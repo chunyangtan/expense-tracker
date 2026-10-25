@@ -3,70 +3,66 @@
 import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { requireUser } from "@/lib/auth";
+import { selectAll } from "@/lib/select-all";
 import { parseRakutenCard, SOURCE, type StatementRow } from "@/lib/statements/rakuten-card";
 import { suggestCategories } from "@/lib/statements/categorise";
 
-export type PreviewRow = StatementRow & {
-  // An earlier row (e.g. from AppSheet) with the same date and amount, to merge into instead of inserting.
-  match: { id: string; item_name: string | null } | null;
-};
-
-export type Preview = {
-  rows: PreviewRow[];
-  alreadyImported: number;
+export type ImportResult = {
   files: number;
+  added: number;
+  merged: number;
+  skipped: number;
   error?: string;
 };
 
 const PAYMENT_METHOD = "Rakuten Credit Card";
 
-export async function previewStatements(formData: FormData): Promise<Preview> {
+// Imports whole statements in one go (DECISIONS.md, 2026-10-25). Every row lands as to check
+// (confirmed_at null) and is checked afterwards in /to-check, so nothing is reviewed up front.
+// Re-uploads add nothing (rule 5), and a row matching a typed-in entry merges into it (rule 6).
+export async function importStatements(formData: FormData): Promise<ImportResult> {
   await requireUser();
   const files = formData.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
-  if (!files.length) return { rows: [], alreadyImported: 0, files: 0, error: "Choose at least one CSV." };
+  const result: ImportResult = { files: files.length, added: 0, merged: 0, skipped: 0 };
+  if (!files.length) return { ...result, error: "Choose at least one CSV." };
 
   let parsed: StatementRow[] = [];
   try {
     for (const f of files) parsed = parsed.concat(parseRakutenCard(await f.text()));
   } catch (e) {
-    return { rows: [], alreadyImported: 0, files: files.length, error: `Couldn't read the file: ${(e as Error).message}` };
+    return { ...result, error: `Couldn't read the file: ${(e as Error).message}` };
   }
 
   const [imported, existing] = await Promise.all([
-    supabase.from("expenses").select("external_id").eq("source", SOURCE),
-    supabase
-      .from("expenses")
-      .select("id, date, amount, item_name, category, sub_category, payment_method")
-      .neq("source", SOURCE),
+    selectAll((from, to) => supabase.from("expenses").select("external_id").eq("source", SOURCE).order("id").range(from, to)),
+    selectAll((from, to) =>
+      supabase
+        .from("expenses")
+        .select("id, date, amount, item_name, category, sub_category, payment_method, notes")
+        .neq("source", SOURCE)
+        .order("id")
+        .range(from, to),
+    ),
   ]);
-  if (imported.error) throw imported.error;
-  if (existing.error) throw existing.error;
-
-  const importedIds = new Set(imported.data.map((r) => r.external_id));
+  const importedIds = new Set(imported.map((r) => r.external_id));
   const fresh = parsed.filter((r) => !importedIds.has(r.external_id));
+  result.skipped = parsed.length - fresh.length;
 
   // Same date and amount, not cash: probably the same purchase entered by hand.
   // The statement's name wins, the existing category stays (DECISIONS.md, 2026-10-24).
-  const candidates = existing.data.filter((e) => e.payment_method !== "Cash");
+  const candidates = existing.filter((e) => e.payment_method !== "Cash");
   const used = new Set<string>();
-  const rows: PreviewRow[] = fresh.map((r) => {
+  const rows = fresh.map((r) => {
     const m = candidates.find((e) => !used.has(e.id) && e.date === r.date && Number(e.amount) === r.amount);
     if (!m) return { ...r, match: null };
     used.add(m.id);
-    return { ...r, category: m.category, sub_category: m.sub_category, match: { id: m.id, item_name: m.item_name } };
+    return { ...r, category: m.category, sub_category: m.sub_category, match: m };
   });
+  await suggestCategories(rows.filter((r) => !r.category), existing);
 
-  await suggestCategories(rows.filter((r) => !r.category), existing.data);
-  return { rows, alreadyImported: parsed.length - fresh.length, files: files.length };
-}
-
-export async function commitStatements(rows: PreviewRow[]): Promise<{ inserted: number; merged: number; error?: string }> {
-  await requireUser();
-  const merges = rows.filter((r) => r.match);
   const inserts = rows.filter((r) => !r.match);
-
   if (inserts.length) {
-    const { error } = await supabase.from("expenses").upsert(
+    const { error, count } = await supabase.from("expenses").upsert(
       inserts.map((r) => ({
         date: r.date,
         item_name: r.item_name,
@@ -80,17 +76,19 @@ export async function commitStatements(rows: PreviewRow[]): Promise<{ inserted: 
         raw_description: r.raw_description,
         external_id: r.external_id,
         kind: r.kind,
+        confirmed_at: null,
       })),
-      { onConflict: "source,external_id", ignoreDuplicates: true },
+      { onConflict: "source,external_id", ignoreDuplicates: true, count: "exact" },
     );
-    if (error) return { inserted: 0, merged: 0, error: error.message };
+    if (error) return { ...result, error: `Couldn't save: ${error.message}` };
+    result.added = count ?? inserts.length;
   }
 
-  for (const r of merges) {
-    const { data: old, error: readError } = await supabase.from("expenses").select("notes").eq("id", r.match!.id).single();
-    if (readError) return { inserted: inserts.length, merged: 0, error: readError.message };
-    // Keep the hand-entered name in notes so nothing is lost.
-    const notes = [old.notes, r.match!.item_name && r.match!.item_name !== r.item_name ? `Entered as: ${r.match!.item_name}` : null]
+  for (const r of rows) {
+    if (!r.match) continue;
+    // Keep the hand-entered name in notes so nothing is lost. The statement changed the entry,
+    // so it goes back to to check.
+    const notes = [r.match.notes, r.match.item_name && r.match.item_name !== r.item_name ? `Entered as: ${r.match.item_name}` : null]
       .filter(Boolean)
       .join("\n");
     const { error } = await supabase
@@ -103,13 +101,16 @@ export async function commitStatements(rows: PreviewRow[]): Promise<{ inserted: 
         source: SOURCE,
         raw_description: r.raw_description,
         external_id: r.external_id,
+        confirmed_at: null,
       })
-      .eq("id", r.match!.id);
-    if (error) return { inserted: inserts.length, merged: 0, error: error.message };
+      .eq("id", r.match.id);
+    if (error) return { ...result, error: `Couldn't merge into “${r.match.item_name}”: ${error.message}` };
+    result.merged++;
   }
 
   revalidatePath("/transactions");
+  revalidatePath("/to-check");
   revalidatePath("/");
   revalidatePath("/add");
-  return { inserted: inserts.length, merged: merges.length };
+  return result;
 }
