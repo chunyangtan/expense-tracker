@@ -15,7 +15,8 @@ This is Next.js 16 with React 19 and Tailwind 4. APIs, conventions and file stru
 
 ## Layout
 
-- `app/(tabs)/`: pages with the bottom tab bar (`layout.tsx`, `tab-bar.tsx`): Home (`page.tsx`), `transactions/`, `ask/` (chat UI, client component), `more/`, `import/`. `app/add/` and `app/transactions/[id]/` (edit) sit outside so the entry form gets the whole screen. Both use the one form in `app/_entry/`
+- `app/(tabs)/`: pages with the bottom tab bar (`layout.tsx`, `tab-bar.tsx`): Home (`page.tsx`), `transactions/`, `ask/` (chat UI, client component), `more/`, `import/`. `app/add/` and `app/transactions/[id]/` (edit) sit outside so the entry form gets the whole screen. Both use the one form in `app/_entry/`. `app/to-check/` is the queue of imported rows waiting to be confirmed
+- `lib/book.ts` (the Japan/Malaysia book, remembered in a cookie), `lib/dates.ts` (Tokyo dates and months), `lib/select-all.ts` (paging past the 1000-row limit)
 - `docs/ui.md`: screens and shared UI patterns. Read it before building or changing a screen
 - `app/api/chat/route.ts`: chat endpoint that sends the expense data to Claude
 - `data/`: my real expense exports. Gitignored personal data, never commit it

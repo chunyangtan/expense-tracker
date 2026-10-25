@@ -13,8 +13,8 @@ How the expense data behaves: the tables, what each value means, and the rules e
 7. **Every change is recorded.** A trigger writes each insert, update and delete to `expenses_history`, and another sets `modified_at`. Code doesn't need to do either.
 8. **"Today" is Tokyo's date**, even when the server runs in UTC. `date` is the purchase date, not the billing date.
 9. **Schema changes go through migrations** in `supabase/migrations/`, applied with `npx supabase db push --linked`. Then regenerate `lib/database.types.ts` with `npx supabase gen types typescript --linked`.
-10. **Imported rows start unconfirmed.** `confirmed_at` is null until I check the row in To check (`docs/ui.md`). Hand-entered rows get `confirmed_at` set when saved. An import that merges into an existing row (rule 6) clears it again. Totals include unconfirmed rows; the flag is about trust, not about counting. (Planned for M4.5, not in the table yet. Existing rows are backfilled as confirmed, since AppSheet rows were typed in and Rakuten Card rows were reviewed before insert.)
-11. **The API returns at most 1000 rows per request.** Anything that reads the whole table must page through it (`scripts/backup.mts` does) or aggregate in SQL.
+10. **Imported rows start unconfirmed.** `confirmed_at` is null until I check the row in To check (`docs/ui.md`). Hand-entered rows get `confirmed_at` set when saved. An import that merges into an existing row (rule 6) clears it again. Totals include unconfirmed rows; the flag is about trust, not about counting. Rows that existed when the column was added (2026-10-25) start confirmed, since AppSheet rows were typed in and Rakuten Card rows were reviewed before insert.
+11. **The API returns at most 1000 rows per request.** Anything that reads the whole table must page through it with `selectAll` (`lib/select-all.ts`) or aggregate in SQL. The chat route still reads one page; M7 replaces it.
 
 ## `expenses`
 
@@ -36,7 +36,7 @@ One row per purchase, refund or transfer.
 | raw_description | text | the statement's original text. A foreign purchase's local-amount line (`現地利用額 … 変換レート …`) is appended after ` / ` |
 | external_id | text | imports only; see rule 5 |
 | kind | text | `expense` (default), `refund`, `transfer` |
-| confirmed_at | timestamptz | planned (rule 10): when I checked the row; null = to check |
+| confirmed_at | timestamptz | when I checked the row; null = to check (rule 10) |
 | receipt_url | text | unused yet (receipt photos, later) |
 | tags | text[] | unused yet |
 | created_at, modified_at | timestamptz | `modified_at` is set by a trigger |

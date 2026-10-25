@@ -102,7 +102,7 @@ My money lives in two countries, so the app keeps two **books** (帳簿), Japan 
 - **Every entry belongs to one book, and the book sets the currency.** You never pick a currency.
 - **An entry goes in the book whose money paid for it, not the country I was in.** A Rakuten Card purchase in KL is billed in yen, so it's in the Japan book, with the ringgit amount kept in the statement text. Cash ringgit spent in KL is in the Malaysia book.
 - **Money sent between books is one transfer with two sides**: out of one book in its currency, into the other in its currency, e.g. ¥30,000 out of Japan and RM 920.00 into Malaysia through Wise. Both sides are transfers, so neither counts as spending. The rate shown is the two amounts divided, which is what the transfer really cost.
-- **The app remembers the last book used**, so a week in KL stays on Malaysia without switching every time.
+- **The app remembers the last book used** (a cookie, set by the book switch and by saving an entry), so a week in KL stays on Malaysia without switching every time.
 - **No combined view for now.** At M8, net worth is shown per book. If a both-books view is added, it shows the two side by side, never added up.
 
 Until accounts exist (M8), the book is simply the entry's `currency`. How books, accounts and the two sides of a transfer are stored is decided with M8 (`docs/data-model.md`).
@@ -117,6 +117,10 @@ The app grows into a personal finance tracker covering income, accounts and inve
 - **The tab bar reshuffles once.** Today: Home, Transactions, ＋, Ask, More. With M8: Home, Transactions, ＋, Assets, More. Ask leaves the bar then, as a button on Home and an item in More. Everything else keeps its place.
 - **Add and Edit grow a type switch.** Edit's Counts as switch (Expense / Refund / Transfer) gains Income, and Add gets the same switch with Expense as the default. No new screen.
 - **Not decided yet:** the data model for income, accounts and investments (including whether income shares the `expenses` table as a new `kind`), the Assets screens, and net-worth and allocation charts.
+
+## Built so far (2026-10-25)
+
+Everything above is built except: transfers between books as one linked entry (M8), the net-worth card (M8), keyword search in Japanese for sub-categories (search matches the stored names only), and Delete's confirm sheet (the browser's own confirm dialog for now).
 
 ## Later, not designed yet
 

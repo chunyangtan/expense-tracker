@@ -70,10 +70,10 @@ The screens in `docs/ui.md`, built in this order so each step is usable on its o
 - [x] Design the core screens (`docs/ui.md`, mockup linked there)
 - [x] App shell: bottom tab bar, Home at `/` (the old overview for now), chat moves to `/ask`, `/expenses` becomes `/transactions`, More page (2026-10-25)
 - [x] Edit and delete: `/transactions/[id]`, opened from any row in Transactions or Add's recent list, using the same entry form as Add (`app/_entry/`), with Counts as and any payment method; delete asks first (2026-10-25)
-- [ ] Transactions (`/transactions`, `/expenses` redirects): month switcher, day totals, search and filter chips, then the calendar view
-- [ ] Entry form (Add and Edit): every field of the record visible and editable in both modes (book, amount, counts as, item, category, sub-category, date, paid with, notes; checked in Edit), with shortcut chips for frequent items, sub-categories, dates and payment methods, a searchable sub-category sheet, and an Undo toast
-- [ ] To check: `confirmed_at` column (backfill existing rows), import inserts rows unconfirmed instead of a review step before insert, `/to-check` queue with ✓ per row and Confirm all, Home banner, Transactions filter
-- [ ] Home: this month's total, change from last month, category breakdown, 6-month bars, latest entries
+- [x] Transactions (`/transactions`, `/expenses` redirects): book switch, month switcher, day totals, search across all months, filter chips (to check, category, paid with), calendar view (2026-10-25)
+- [x] Entry form (Add and Edit): every field visible and editable in both modes, book switch, shortcut chips (frequent items, sub-categories, dates, payment methods), searchable sub-category sheet with "+ New", Checked switch in Edit, Undo toast after adding (2026-10-25)
+- [x] To check: `confirmed_at` column (existing rows start confirmed), imports insert rows as to check with no review step before insert, `/to-check` with ✓ per row and Confirm all, Home banner, Transactions filter (2026-10-25)
+- [x] Home: book switch, month switcher, this month's total, change from last month, daily average, category breakdown, 6-month bars, latest entries, to-check banner (2026-10-25)
 
 Done when I can add, fix and review a day's spending on my phone without opening Supabase.
 
