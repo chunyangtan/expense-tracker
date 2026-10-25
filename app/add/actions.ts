@@ -3,39 +3,18 @@
 import { revalidatePath } from "next/cache";
 import { supabase } from "@/lib/supabase";
 import { requireUser } from "@/lib/auth";
+import { money, parseEntry, type EntryState } from "@/app/_entry/values";
 
-export type AddState = { ok: boolean; message: string };
-
-const text = (v: FormDataEntryValue | null) => (typeof v === "string" && v.trim() ? v.trim() : null);
-
-export async function addExpense(_prev: AddState, formData: FormData): Promise<AddState> {
+export async function addExpense(_prev: EntryState, formData: FormData): Promise<EntryState> {
   await requireUser();
-  const date = text(formData.get("date"));
-  const item = text(formData.get("item_name"));
-  const currency = text(formData.get("currency"));
-  const amount = Number(text(formData.get("amount"))?.replace(/[,¥]/g, ""));
+  const parsed = parseEntry(formData);
+  if ("error" in parsed) return { ok: false, message: parsed.error };
 
-  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return { ok: false, message: "Pick a date." };
-  if (!item) return { ok: false, message: "Enter what you bought." };
-  if (currency !== "JPY" && currency !== "MYR") return { ok: false, message: "Currency must be JPY or MYR." };
-  if (!Number.isFinite(amount) || amount <= 0) return { ok: false, message: "Enter an amount above zero." };
-
-  const { error } = await supabase.from("expenses").insert({
-    date,
-    item_name: item,
-    category: text(formData.get("category")),
-    sub_category: text(formData.get("sub_category")),
-    payment_method: text(formData.get("payment_method")),
-    amount,
-    currency,
-    notes: text(formData.get("notes")),
-    source: "manual",
-  });
+  const { error } = await supabase.from("expenses").insert({ ...parsed.row, source: "manual" });
   if (error) return { ok: false, message: `Couldn't save: ${error.message}` };
 
   revalidatePath("/add");
   revalidatePath("/transactions");
   revalidatePath("/");
-  const shown = new Intl.NumberFormat("en", { style: "currency", currency }).format(amount);
-  return { ok: true, message: `Saved ${item}, ${shown}.` };
+  return { ok: true, message: `Saved ${parsed.row.item_name}, ${money(parsed.row.amount, parsed.row.currency)}.` };
 }

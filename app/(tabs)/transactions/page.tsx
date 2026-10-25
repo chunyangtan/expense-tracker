@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 
 function money(amount: number, currency: string) {
@@ -43,19 +44,21 @@ export default async function Transactions() {
           <h2 className="text-xs font-medium text-gray-500 mb-1">{dayLabel(date)}</h2>
           <ul className="divide-y divide-gray-100 dark:divide-gray-800">
             {expenses.map((e) => (
-              <li key={e.id} className="py-2.5 flex justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-sm truncate">{e.item_name ?? "(no name)"}</p>
-                  <p className="text-xs text-gray-500 truncate">
-                    {[e.sub_category ?? e.category, e.payment_method].filter(Boolean).join(" · ")}
-                  </p>
-                  {e.notes && (
-                    <p className="text-xs text-gray-400 truncate" title={e.notes}>
-                      {e.notes}
+              <li key={e.id}>
+                <Link href={`/transactions/${e.id}`} className="py-2.5 flex justify-between gap-4 hover:bg-gray-50 dark:hover:bg-gray-900">
+                  <div className="min-w-0">
+                    <p className="text-sm truncate">{e.item_name ?? "(no name)"}</p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {[e.sub_category ?? e.category, e.payment_method].filter(Boolean).join(" · ")}
                     </p>
-                  )}
-                </div>
-                <p className="text-sm font-medium tabular-nums whitespace-nowrap">{money(e.amount, e.currency)}</p>
+                    {e.notes && (
+                      <p className="text-xs text-gray-400 truncate" title={e.notes}>
+                        {e.notes}
+                      </p>
+                    )}
+                  </div>
+                  <p className="text-sm font-medium tabular-nums whitespace-nowrap">{money(e.amount, e.currency)}</p>
+                </Link>
               </li>
             ))}
           </ul>
