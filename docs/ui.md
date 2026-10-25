@@ -44,19 +44,22 @@ Budgets slot in under the total later, as a progress bar per category. Not now.
 
 ### Entry form (Add and Edit)
 
-Add and Edit are one form. Add opens it empty with defaults, Edit opens it filled in. Every field, control and picker is the same, so there's one thing to learn and one thing to build. Hand entry covers every payment method, not just cash.
+Add and Edit are one form. Add opens it empty with defaults, Edit opens it filled in. **Every field of the record is visible, labelled and editable in both modes.** The shortcuts (chips) only fill fields faster; they never replace a field. Hand entry covers every payment method, not just cash.
 
 From top to bottom:
 
-1. **Book switch,** set to the book last used. The book sets the currency.
-2. **Amount,** focused on open in Add, large, with the native decimal keyboard. Under it, the **type** chips: Expense (default) | Refund | Transfer, with a one-line explanation for the last two. Transfer covers transfers between books. Refund keeps the amount negative (data-model rule 3). Income joins at M8.
-3. **Item,** with suggestions from past items and, in Add, chips for this book's most-used items. Picking a past item fills its last category and payment method, with a line saying so ("Filled from the last time: Cafe · Rakuten Pay"). Most entries are repeats, so this does most of the work.
-4. **Category:** up to 6 chips for this book's most-used sub-categories over the last 90 days, each with its top category's colour. The current choice is always among them, and its path shows below (`Variable (変動費) › Cafe`). "All categories" opens a sheet with a search box and every sub-category grouped under its top category, most used first, with use counts. Search matches English and Japanese keywords (`cafe`, `医療`). With no exact match it offers "+ New sub-category" with the search text.
-5. **Paid with:** chips for this book's most-used payment methods (Japan: Cash, Rakuten Card, Rakuten Pay, PayPay, Suica; Malaysia: Cash, Maybank Debit, Touch 'n Go, Wise Card), plus "Other…". The default is the last method used in this book. When the method has a statement import (Rakuten Card today), a line says the entry will be matched when the statement comes in, not added twice (data-model rule 6).
-6. **Date:** Today | Yesterday | a picker chip that shows the picked date.
-7. **Notes,** collapsed behind "Add note" when empty.
-8. **Edit only:** for imported rows, a read-only box with the source, the statement's original text and whether it's been checked. Delete, behind a confirm sheet. The change history records every save and delete (rule 7).
-9. **Bottom button:** Save in Add (the form resets and a toast shows "Saved · Undo"). Save changes in Edit. Confirm in Edit when the entry is still to check, which saves any fixes and marks it checked in one tap.
+1. **Book:** Japan · ¥ | Malaysia · RM, set to the book last used. The book sets the currency.
+2. **Amount,** large, with the native decimal keyboard, focused on open in Add.
+3. **Counts as:** Expense | Refund | Transfer, with a one-line explanation of the current choice. Transfer covers transfers between books. Refund keeps the amount negative (data-model rule 3). Income joins at M8.
+4. **Item.** In Add, chips for this book's most-used items sit below it. Picking one fills item, category, sub-category and payment method from its last use, with a line saying so ("Filled from the last time: Cafe · Rakuten Pay").
+5. **Category | Sub-category,** side by side. Category is a plain select of the three top categories. Sub-category opens a sheet with a search box and every sub-category grouped under its top category: the current category's group first, most used first, with use counts. Search matches English and Japanese keywords (`cafe`, `医療`). With no exact match it offers "+ New sub-category … in <category>". Picking a sub-category also sets its category. Below the two fields is one scrolling row of chips for this book's 6 most-used sub-categories over the last 90 days.
+6. **Date | Paid with,** side by side. Date is the native date picker, defaulting to today. Paid with is a text field with suggestions from every method used in this book. Below them is one scrolling row of shortcuts: Today and Yesterday, then this book's 4 most-used payment methods (Japan: Cash, Rakuten Card, Rakuten Pay, PayPay; Malaysia: Cash, Maybank Debit, Touch 'n Go, Wise Card). Add defaults Paid with to the last method used in this book. When the method has a statement import (Rakuten Card today), a line says the entry will be matched when the statement comes in, not added twice (data-model rule 6).
+7. **Notes,** always visible.
+8. **Edit only:**
+   - For imported rows, a read-only box with the source and the statement's original text. Those two come from the statement and can't be edited.
+   - A **Checked** switch (rule 10). A row that's still to check shows a banner at the top, and the bottom button says "Save · still to check" until the switch is on.
+   - Delete, behind a confirm sheet. The change history records every save and delete (rule 7).
+9. **Bottom button:** Save. In Add the form then resets and a toast shows "Saved · Undo".
 
 Managing the category and payment-method lists (rename, merge, hide unused) goes in More, later.
 
@@ -66,7 +69,7 @@ Statement imports go in whole, in bulk, and every imported row starts as **to ch
 
 - **Header:** how many entries are left and what the import did ("Rakuten Card · October statement · 61 rows added, 3 matched entries you'd typed in, 2 already here and skipped").
 - **List:** date, statement name, amount, and the suggested category with its colour. A line explains anything non-obvious: "Matched your entry スーパー", "Rule: Rakuten Cash top-up", "Suggested. Check it."
-- **Each row has a ✓ button** (48px) that confirms it as is. Tapping the row opens the entry form with a "not checked yet" banner and a Confirm button.
+- **Each row has a ✓ button** (48px) that confirms it as is. Tapping the row opens the entry form with a "not checked yet" banner and the Checked switch.
 - **Confirm all N** at the bottom for when the list has been scanned.
 - **When the list is empty:** "All checked", with a link back to Home.
 

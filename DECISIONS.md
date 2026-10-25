@@ -19,6 +19,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
   - What I asked for: Add and Edit should be the same, hand entry should cover every option, and each imported row should be confirmed with a flag to make the tracker more accurate. The points below were added by Claude while designing it and haven't been confirmed by me yet.
   - Two forms meant two layouts to learn and to build, and they drifted apart in the mockup within a day.
   - Card and wallet purchases sometimes need logging before the statement arrives, or have no statement import yet (PayPay, Suica, Malaysia accounts until M5). Rule 6 already merges a hand-entered card row with its statement row, so entering it by hand doesn't double count.
+  - Every field stays visible and editable in both modes, with chips as shortcuts on top. The chip-only Add screen hid fields (category, full date, notes) behind taps, and the earlier Edit screen's plain labelled fields were clearer (my feedback on the mockup).
   - Bulk import without a gate makes the data complete straight away. Checking each row afterwards makes it accurate, and I can do that a few rows at a time on my phone instead of in one sitting at upload.
   - A flag per row shows exactly what hasn't been looked at, which a one-off review before insert can't.
   - Totals still include unconfirmed rows. Leaving them out would make the numbers jump every time I check a row.
