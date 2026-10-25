@@ -22,7 +22,7 @@ export function EntryRow({ e, from, meta }: { e: RowData; from: string; meta?: s
   return (
     <li>
       <Link href={`/transactions/${e.id}?from=${from}`} className="py-2.5 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-gray-900">
-        <span className="size-2.5 shrink-0 rounded-full" style={{ background: transfer ? "#A3A5AA" : categoryColor(e.category) }} />
+        <span className="size-2.5 shrink-0 rounded-full" style={{ background: transfer ? "var(--cat-none)" : categoryColor(e.category) }} />
         <span className={`flex-1 min-w-0 ${transfer ? "opacity-60" : ""}`}>
           <span className="block text-sm truncate">{e.item_name ?? "(no name)"}</span>
           <span className="block text-xs text-gray-500 truncate">

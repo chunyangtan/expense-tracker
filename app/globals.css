@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Category colours, checked with the dataviz palette validator against each surface. */
+  --cat-living: #1f66c1;
+  --cat-variable: #e08a2e;
+  --cat-special: #7b57c2;
+  --cat-none: #a3a5aa;
 }
 
 @theme inline {
@@ -16,6 +21,10 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --cat-living: #3a7bd5;
+    --cat-variable: #cf7c24;
+    --cat-special: #8b68d1;
+    --cat-none: #6b6e75;
   }
 }
 
