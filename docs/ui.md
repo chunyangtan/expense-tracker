@@ -2,6 +2,8 @@
 
 How the app looks and behaves for everyday use on a phone: the screens, what each is for, and the patterns they share. Read it before building or changing a screen, and update it in the same change when a screen or pattern changes. The reasons are in `DECISIONS.md` (2026-10-25: everyday UI). The clickable mockup is on the canvas at https://claude.ai/artifact/LVM5oHq7NCF59MRQxneY5J.
 
+**Status: working draft (2026-10-25).** The structure is settled: screen map, tab bar, books, one entry form, To check. Visual details, the Home cards and the analysis screens get a redesign pass once all sources are imported (after M5 and M6), when real data shows what matters. Until then, build to this doc, but don't polish.
+
 The goal is the one from `ROADMAP.md`: I use this instead of AppSheet every day. So the screens are tuned for three jobs, in this order: log a cash purchase in under 5 seconds, fix a wrong entry in a few taps, and see where this month's money went at a glance.
 
 ## Screen map

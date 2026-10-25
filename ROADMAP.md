@@ -80,6 +80,7 @@ Done when I can add, fix and review a day's spending on my phone without opening
 ## After Phase 1
 
 - **M5, more statement sources:** one parser per source, reusing M3's review and dedup flow: SMBC Card (Vpass), PayPay, Rakuten Pay, Wise. Count each payment flow once: if a wallet is topped up from a card, import the purchases from one side only and mark top-ups as `kind = 'transfer'`.
+- **UI redesign pass, after M5 and M6:** with every source imported, revisit `docs/ui.md` against the real data: Home cards, analysis, category lists, visual polish. The structure (tabs, books, entry form, To check) stays unless real use shows it's wrong.
 - **M6, history:** import the row-level 2020 and 2023 files. Leave out 2017–2019, because those files only have monthly category totals.
 - **M7, better analysis:** the pages and the chat read the table in one request, and the API returns at most 1000 rows per request, so they need paging or aggregate queries before the table passes 1000 rows (531 on 2026-10-24, roughly 45 a month). Once the data is too big to put the whole table in the prompt, give Claude tools (query by date, category or currency) in place of the full dump. Use Sonnet in production.
 - **M8, accounts and balances:** grow into a personal finance tracker. An `accounts` table (name, institution, type, currency), balance snapshots, income, and bank statement import through the M3/M5 flow. Needs M4's auth and RLS first. Store account names and balances only, never login credentials or full account numbers.
