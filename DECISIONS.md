@@ -4,6 +4,13 @@ Why this project is built the way it is. `ROADMAP.md` covers what is being built
 
 Each entry gives the choice, the alternatives and the reasons. If a reason was reconstructed after the fact and not recorded at the time, say so.
 
+## 2026-10-29: everything runs in Tokyo
+
+- **Choice:** Vercel functions in Tokyo (`hnd1`, in `vercel.json`) and a new Supabase project in Tokyo (`ap-northeast-1`, ref `lqdektfjqlydpyvkzayi`). This replaces the Singapore setup from 2026-10-24.
+- **Alternatives:** keep both in Singapore, or move only the functions to Tokyo. Moving only the functions would put every database query on the Tokyo–Singapore link (about 70 ms each, several per page), which is slower than today.
+- **Why:** I use the app from Japan almost all the time, so I want the server and the database next to me. Malaysia gets a little slower, which is fine. The migration was a one-off: schema from `supabase/migrations/`, then every `expenses`, `expenses_history` and auth row copied with triggers off and checked by row hash.
+- **Note:** the old Singapore project (`ezzbthizyhgbkndcyibd`) stays as a fallback until the Tokyo one has run for a while.
+
 ## 2026-10-25: one entry form, any payment method, imports confirmed row by row
 
 - **Choice:**
@@ -142,7 +149,7 @@ Each entry gives the choice, the alternatives and the reasons. If a reason was r
 
 ## 2026-10-24: Vercel for hosting
 
-- **Choice:** host the app on Vercel's Hobby plan, deployed from GitHub, so every push to `main` deploys to production.
+- **Region:** functions run in Singapore (`sin1`, set in `vercel.json`), next to the Supabase project (`ap-southeast-1`). Each page makes several database queries, which stay inside Singapore. A request from Japan crosses to Singapore once (about 70 ms), and Malaysia is close. Moving Supabase to Tokyo would need a new project and a data migration, which isn't worth it. Superseded on 2026-10-29: both moved to Tokyo (see that entry).
 - **Alternatives:** Netlify, Cloudflare (via the OpenNext adapter), Railway / Render / Fly, a VPS running `next start`.
 - **Why:**
   - Vercel makes Next.js, so Server Actions, `proxy.ts` and streaming work with no setup. Cloudflare needs an adapter with gaps in Node.js support (the statement parser uses `node:crypto`). Netlify's Next.js runtime trails new releases.
